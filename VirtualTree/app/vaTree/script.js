@@ -1,5 +1,9 @@
 ﻿(function ($interval, $parse, $compile) {
 
+    var s = document.getElementsByTagName('script');
+    var scriptUrl = s[s.length - 1].src;
+    var scriptPath = scriptUrl.replace(/(.*\/)(.*\.js)/i, "$1");
+
     function fn($interval, $parse, $compile) {
 
         var items = [];
@@ -8,6 +12,7 @@
 
             var self = this;
 
+            scope.scriptPath = scriptPath
 
             var elements = {
 
@@ -16,13 +21,6 @@
             var current = {
 
             };
-
-            scope.template =
-                '<span >{{item.index}} / {{item.text}}</span>' +
-                '<ul ng-if="item.sub">' +
-                '  <li ng-repeat="item in item.sub"></li>' +
-                '</ul>';
-
 
 
             scope.$watch("vaLength", function (newVal) {
@@ -66,7 +64,7 @@
         }
 
         return {
-            templateUrl: function () { return "app/vaTree/template.html?t=" + Math.random(); },
+            templateUrl: function () { return scriptPath + "template.html?t=" + Math.random(); },
             link: link,
             scope: {
                 vaTemplate: "="

@@ -1,0 +1,5 @@
+﻿<span>{{item.index}} / {{item.text}}</span>
+<ul ng-if="item.sub">
+    <li ng-repeat="item in item.sub" ng-include="'app/vaTree/branch-template.html'"></li>
+</ul>
+
