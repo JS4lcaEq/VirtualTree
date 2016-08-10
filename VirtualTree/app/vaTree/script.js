@@ -13,6 +13,7 @@
             var self = this;
 
             scope.scriptPath = scriptPath
+            scope.itemTemplate = " template = {{item.index}} / {{item.text}}";
 
             var elements = {
 

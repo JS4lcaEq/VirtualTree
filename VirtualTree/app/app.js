@@ -29,6 +29,7 @@
 
     function MainCtrl($scope, $interval) {
         this.test = "MainCtrl";
+        this.template = "{{test}}";
         this.levelsCount = 1;
         this.levelItemsCount = 2;
         this.data = {  };
@@ -50,7 +51,7 @@
 
     }
 
-    angular.module('app', ["vaVirtualTreeDirective"]);
+    angular.module('app', ["vaVirtualTreeDirective", "vaTemplateDirective"]);
 
     angular.module('app').controller('MainCtrl', MainCtrl);
 

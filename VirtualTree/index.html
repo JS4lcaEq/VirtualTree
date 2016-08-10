@@ -61,6 +61,7 @@
                 <h2>Data Source</h2>
                 <label>Levels count: <input class="form-control" ng-model="ctrl.levelsCount" /></label>
                 <label>Level items count: <input class="form-control" ng-model="ctrl.levelItemsCount" /></label>
+                <label>template: <input class="form-control" ng-model="ctrl.template" /></label>
                 <p><button class="btn btn-default" role="button" ng-click="ctrl.createData(ctrl.levelsCount, ctrl.levelItemsCount)">Reset</button></p>
                 <p>{{ctrl.src.length}}</p>
             </div>
@@ -74,14 +75,15 @@
             </div>
         </div>
         <hr />
-        <ul>
+        <!--<ul>
             <li ng-repeat="item in ctrl.data.sub" ng-include="'app/vaTree/branch-template.html'"></li>
-        </ul> 
+        </ul>--> 
         <hr />
         <va-virtual-tree va-src="ctrl.data"></va-virtual-tree>
         <hr />
         <p>Angular tester - ctrl.test="{{ctrl.test}}"</p>
         <hr>
+        {{ctrl.template}} = <va-template va-tmplt="ctrl.template"></va-template>
         <footer>
             <p>Virtual Tree &copy; VAsoft 2016</p>
         </footer>
@@ -100,6 +102,7 @@
     <script src="/assets/js/ie10-viewport-bug-workaround.js"></script>
     <script src="Scripts/angular.min.js"></script>
     <script src="Scripts/angular-touch.min.js"></script>
+    <script src="app/vaTemplate/script.js"></script>
     <script src="app/vaTree/script.js"></script>
     <script src="app/app.js"></script>
     <script>angular.bootstrap("html", ['app']);</script>
