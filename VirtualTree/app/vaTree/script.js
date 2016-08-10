@@ -17,15 +17,11 @@
 
             };
 
-
-
-
-
-            elements.scrolls.fast.on("scroll", function () {
-
-            });
-
-
+            scope.template =
+                '<span >{{item.index}} / {{item.text}}</span>' +
+                '<ul ng-if="item.sub">' +
+                '  <li ng-repeat="item in item.sub"></li>' +
+                '</ul>';
 
 
 
@@ -33,32 +29,38 @@
 
             });
 
+            function setWindow() {
+                scope.data = scope.vaSrc;
+            }
+
             scope.$watch("vaSrc", function (newVal) {
-                if (nw && nw.length > 0) {
-                    
+
+                if (newVal) {
+                    console.log("vaSrc: ", newVal);
+                    setWindow();
                 }
             });
 
-            scope.onClick = function (item) {
+            //scope.onClick = function (item) {
 
-            };
+            //};
 
 
-            function setHeight() {
+            //function setHeight() {
 
-            }
+            //}
 
-            function setIndexes(startIndex) {
+            //function setIndexes(startIndex) {
 
-            }
+            //}
 
-            function setDataWindow() {
+            //function setDataWindow() {
               
-                scope.dataWindow.length = 0;
-                for (var i = current.indexes.start; i < current.indexes.end; i++) {
-                    scope.dataWindow.push(scope.vaSrc[i]);
-                }
-            }
+            //    scope.dataWindow.length = 0;
+            //    for (var i = current.indexes.start; i < current.indexes.end; i++) {
+            //        scope.dataWindow.push(scope.vaSrc[i]);
+            //    }
+            //}
 
 
         }

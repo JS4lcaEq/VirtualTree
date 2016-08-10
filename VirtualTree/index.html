@@ -77,7 +77,9 @@
         <ul>
             <li ng-repeat="item in ctrl.data.sub" ng-include="'tree_template'"></li>
         </ul> 
-        <hr>
+        <hr />
+        <va-virtual-tree va-src="ctrl.data"></va-virtual-tree>
+        <hr />
         <p>Angular tester - ctrl.test="{{ctrl.test}}"</p>
         <hr>
         <footer>
@@ -104,6 +106,7 @@
     <script src="/assets/js/ie10-viewport-bug-workaround.js"></script>
     <script src="Scripts/angular.min.js"></script>
     <script src="Scripts/angular-touch.min.js"></script>
+    <script src="app/vaTree/script.js"></script>
     <script src="app/app.js"></script>
     <script>angular.bootstrap("html", ['app']);</script>
 </body>

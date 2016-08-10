@@ -20,7 +20,7 @@
             }
             parent.sub.push(item);
             dataCount++;
-            console.log("step");
+            //console.log("step");
             if (level < levelsCount) {
                 createDataBranch(item, levelsCount, levelItemsCount, level + 1);
             }
@@ -29,8 +29,8 @@
 
     function MainCtrl($scope, $interval) {
         this.test = "MainCtrl";
-        this.levelsCount = 3;
-        this.levelItemsCount = 3;
+        this.levelsCount = 1;
+        this.levelItemsCount = 2;
         this.data = {  };
         this.dataCount = dataCount;
         this.createData = function (levelsCount, levelItemsCount) {
@@ -50,7 +50,7 @@
 
     }
 
-    angular.module('app', []);
+    angular.module('app', ["vaVirtualTreeDirective"]);
 
     angular.module('app').controller('MainCtrl', MainCtrl);
 
