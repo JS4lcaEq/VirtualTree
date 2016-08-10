@@ -85,7 +85,7 @@
         </footer>
     </div>
     <pre>
-{{ctrl.data}}
+{{ctrl.data_}}
 {{ctrl.dataCount}}        
 </pre>
     <!-- /container -->
@@ -95,10 +95,9 @@
     <script src="Scripts/jquery-3.0.0.min.js"></script>
     <script src="Scripts/bootstrap.min.js"></script>
     <script type="text/ng-template" id="tree_template">
-        {{item.index}} / {{item.text}}
+        <span >{{item.index}} / {{item.text}}</span>
         <ul ng-if="item.sub">
-            <li ng-repeat="item in item.sub" ng-include="'tree_template'" >
-            </li>
+            <li ng-repeat="item in item.sub" ng-include="'tree_template'" ></li>
         </ul>
     </script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
