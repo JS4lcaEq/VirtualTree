@@ -16,6 +16,7 @@
             scope.item = scope.vaData;
 
             scope.$watch("vaTmplt", function (newVal) {
+                console.log("vaTmplt: ", newVal);
                 setTemplate(newVal);
             });
 

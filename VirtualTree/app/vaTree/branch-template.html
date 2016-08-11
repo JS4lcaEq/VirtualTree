@@ -1,4 +1,4 @@
-﻿<span>{{item.index}} / {{item.text}}<va-template va-tmplt="itemTemplate" va-data="item"></va-template></span>
+﻿<span>{{item.index}} / {{item.text}}</span>
 <ul ng-if="item.sub">
     <li ng-repeat="item in item.sub" ng-include="scriptPath+'branch-template.html'"></li>
 </ul>

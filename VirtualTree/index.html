@@ -14,6 +14,10 @@
     <!-- Bootstrap core CSS -->
     <link href="Content/bootstrap.min.css" rel="stylesheet" />
 
+    <link href="assets/kendo.common.min.css" rel="stylesheet" />
+    <link href="assets/kendo.default.min.css" rel="stylesheet" />
+    <link href="assets/kendo.default.mobile.min.css" rel="stylesheet" />
+
     <!-- Custom styles for this template -->
     <!--<link href="jumbotron.css" rel="stylesheet">-->
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
@@ -82,8 +86,31 @@
         <va-virtual-tree va-src="ctrl.data"></va-virtual-tree>
         <hr />
         <p>Angular tester - ctrl.test="{{ctrl.test}}"</p>
-        <hr>
+        <hr />
         {{ctrl.template}} = <va-template va-tmplt="ctrl.template"></va-template>
+        <hr />
+        <kendo-grid options="mainGridOptions">
+            <div k-detail-template>
+                <kendo-tabstrip>
+                    <ul>
+                        <li class="k-state-active">Orders</li>
+                        <li>Contact information</li>
+                    </ul>
+                    <div>
+                        <div kendo-grid k-options="detailGridOptions(dataItem)"></div>
+                    </div>
+                    <div>
+                        <ul class="contact-info-form">
+                            <li><label>Country:</label> <input class="k-textbox" ng-model="dataItem.Country" /></li>
+                            <li><label>City:</label> <input class="k-textbox" ng-model="dataItem.City" /></li>
+                            <li><label>Address:</label> {{dataItem.Address}}</li>
+                            <li><label>Home phone:</label> {{dataItem.HomePhone}}</li>
+                        </ul>
+                    </div>
+                </kendo-tabstrip>
+            </div>
+        </kendo-grid>
+        <hr />
         <footer>
             <p>Virtual Tree &copy; VAsoft 2016</p>
         </footer>
@@ -104,6 +131,7 @@
     <script src="Scripts/angular-touch.min.js"></script>
     <script src="app/vaTemplate/script.js"></script>
     <script src="app/vaTree/script.js"></script>
+    <script src="assets/js/kendo.all.min.js"></script>
     <script src="app/app.js"></script>
     <script>angular.bootstrap("html", ['app']);</script>
 </body>

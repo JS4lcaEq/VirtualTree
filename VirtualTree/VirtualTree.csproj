@@ -71,9 +71,19 @@
     <Content Include="app\vaTree\script.js" />
     <Content Include="app\vaTree\style.css" />
     <Content Include="app\vaTree\template.html" />
+    <Content Include="assets\js\kendo.all.min.js" />
+    <Content Include="assets\kendo.common.min.css" />
+    <Content Include="assets\kendo.default.min.css" />
+    <Content Include="assets\kendo.default.mobile.min.css" />
+    <Content Include="assets\kendo.mobile.all.min.css" />
     <Content Include="packages.config" />
     <Content Include="Scripts\jquery-3.0.0.slim.min.map" />
     <Content Include="Scripts\jquery-3.0.0.min.map" />
+    <Content Include="assets\js\kendo.all.min.js.map" />
+    <Content Include="assets\kendo.mobile.all.min.css.map" />
+    <Content Include="assets\kendo.common.min.css.map" />
+    <Content Include="assets\kendo.default.min.css.map" />
+    <Content Include="assets\kendo.default.mobile.min.css.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
