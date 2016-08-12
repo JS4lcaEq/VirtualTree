@@ -89,7 +89,7 @@
         <hr />
         {{ctrl.template}} = <va-template va-tmplt="ctrl.template"></va-template>
         <hr />
-        <kendo-grid options="mainGridOptions">
+        <!--<kendo-grid options="mainGridOptions">
             <div k-detail-template>
                 <kendo-tabstrip>
                     <ul>
@@ -110,7 +110,7 @@
                 </kendo-tabstrip>
             </div>
         </kendo-grid>
-        <hr />
+        <hr />-->
         <footer>
             <p>Virtual Tree &copy; VAsoft 2016</p>
         </footer>
@@ -120,8 +120,7 @@
 {{ctrl.dataCount}}        
 </pre>
     <!-- /container -->
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
+    <!-- ====== Bootstrap core JavaScript ========================= -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="Scripts/jquery-3.0.0.min.js"></script>
     <script src="Scripts/bootstrap.min.js"></script>
@@ -131,6 +130,7 @@
     <script src="Scripts/angular-touch.min.js"></script>
     <script src="app/vaTemplate/script.js"></script>
     <script src="app/vaTree/script.js"></script>
+    <script src="app/treeDataService.js"></script>
     <script src="assets/js/kendo.all.min.js"></script>
     <script src="app/app.js"></script>
     <script>angular.bootstrap("html", ['app']);</script>

@@ -113,7 +113,7 @@
 
     }
 
-    angular.module('app', ["vaVirtualTreeDirective", "vaTemplateDirective", "kendo.directives"]);
+    angular.module('app', ["vaVirtualTreeDirective", "vaTemplateDirective", "vaTreeDataService","kendo.directives"]);
 
     angular.module('app').controller('MainCtrl', MainCtrl);
 

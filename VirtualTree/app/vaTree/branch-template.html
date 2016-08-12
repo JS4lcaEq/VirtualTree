@@ -1,5 +1,5 @@
-﻿<span>{{item.index}} / {{item.text}}</span>
+﻿<span>{{item.index}} / {{item.text}} / {{item.obj.text}}</span>
 <ul ng-if="item.sub">
-    <li ng-repeat="item in item.sub" ng-include="scriptPath+'branch-template.html'"></li>
+    <li ng-repeat="item in item.sub" ng-include="scriptPath+'branch-template.html?t=1'"></li>
 </ul>
 

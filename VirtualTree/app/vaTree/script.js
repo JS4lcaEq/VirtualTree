@@ -4,7 +4,7 @@
     var scriptUrl = s[s.length - 1].src;
     var scriptPath = scriptUrl.replace(/(.*\/)(.*\.js)/i, "$1");
 
-    function fn($interval, $parse, $compile) {
+    function fn($interval, $parse, $compile, TreeDataService) {
 
         var items = [];
 
@@ -23,6 +23,7 @@
 
             };
 
+            scope.meta = {};
 
             scope.$watch("vaLength", function (newVal) {
 
@@ -36,6 +37,8 @@
 
                 if (newVal) {
                     console.log("vaSrc: ", newVal);
+                    scope.meta = TreeDataService.getMeta(newVal, "sub");
+                    console.log("scope.meta: ", scope.meta);
                     setWindow();
                 }
             });
