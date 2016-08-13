@@ -8,6 +8,7 @@
         this.getMeta = function (data, subItemsFieldName) {
             metaItemIndex = 0;
             var meta = newMeta(null, data);
+            meta.opened = true;
             return meta;
         };
     }
@@ -23,6 +24,7 @@
         }
         item.obj = obj;
         item.sub = null;
+        item.opened = false;
         item.fillSub = function () {
             if (obj.sub) {
                 item.sub = [];

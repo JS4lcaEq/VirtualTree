@@ -1,37 +1,3 @@
-﻿.va-virtual-repeater {
-    border: solid 1px #eee;
-    overflow:hidden;
+﻿.va-virtual-tree .folder {
+    text-decoration:underline;
 }
-
-    .va-virtual-repeater .va-scroll-slow {
-        background-color: rgba(0, 0, 0, 0.001);
-        width: 150%;
-        margin-right: -100%;
-        height: 100%;
-        float: left;
-        overflow-y: auto;
-    }
-
-    .va-virtual-repeater .va-scroll-fast {
-        background-color: rgba(0, 0, 0, 0.001);
-        width: 20px;
-        margin-left: -100%;
-        height: 100%;
-        float: right;
-        overflow-y: auto;
-    }
-
-    .va-virtual-repeater .va-slider {
-        width: 1px;
-
-    }
-
-    .va-virtual-repeater .va-list {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        float: left;
-        margin-right: -100%;
-        /*background-color: #fbc8c8;*/
-    }

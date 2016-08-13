@@ -25,13 +25,15 @@
 
             scope.meta = {};
 
+            scope.onClick = function (clickedItem) {
+                clickedItem.opened = !clickedItem.opened;
+            };
+
             scope.$watch("vaLength", function (newVal) {
 
             });
 
-            function setWindow() {
-                scope.data = scope.vaSrc;
-            }
+
 
             scope.$watch("vaSrc", function (newVal) {
 
@@ -42,6 +44,10 @@
                     setWindow();
                 }
             });
+
+            function setWindow() {
+                scope.data = scope.vaSrc;
+            }
 
             //scope.onClick = function (item) {
 
