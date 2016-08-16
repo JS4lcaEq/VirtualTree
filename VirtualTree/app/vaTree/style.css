@@ -1,3 +1,4 @@
 ﻿.va-virtual-tree .folder {
     text-decoration:underline;
+    cursor: pointer;
 }
