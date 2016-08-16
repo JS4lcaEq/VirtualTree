@@ -2,9 +2,9 @@
     <li ng-repeat="item in data.sub" ng-include="scriptPath+'branch-template.html?t=1'"></li>
 </ul>
 <hr />-->
-<ul class="va-virtual-tree">
-    <li ng-repeat="item in meta.sub" ng-include="scriptPath+'branch-template.html?t=1'"></li>
-</ul>
+<ol class="va-virtual-tree">
+    <li ng-repeat="item in meta.sub" ng-include="scriptPath + 'branch-template.html?t=' + t"></li>
+</ol>
 
 
 

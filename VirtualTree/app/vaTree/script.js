@@ -3,6 +3,7 @@
     var s = document.getElementsByTagName('script');
     var scriptUrl = s[s.length - 1].src;
     var scriptPath = scriptUrl.replace(/(.*\/)(.*\.js)/i, "$1");
+    var t = Math.random();
 
     function fn($interval, $parse, $compile, TreeDataService) {
 
@@ -12,7 +13,8 @@
 
             var self = this;
 
-            scope.scriptPath = scriptPath
+            scope.scriptPath = scriptPath;
+            scope.t = t;
             scope.itemTemplate = " template = {{item.index}} / {{item.text}}";
 
             var elements = {
