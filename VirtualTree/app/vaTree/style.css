@@ -7,3 +7,16 @@ label span {
     /*background-color:antiquewhite;*/
     display:inline-block;
 }
+
+.va-virtual-tree .level1 {
+margin-left: 20px;
+}
+.va-virtual-tree .level2 {
+margin-left: 40px;
+}
+.va-virtual-tree .level3 {
+margin-left: 60px;
+}
+.va-virtual-tree .level4 {
+margin-left: 80px;
+}

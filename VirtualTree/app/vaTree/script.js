@@ -27,8 +27,21 @@
 
             scope.meta = {};
 
+            scope.opened = {};
+
             scope.onClick = function (clickedItem) {
                 clickedItem.opened = !clickedItem.opened;
+                if (clickedItem.opened) {
+                    for (var i = 0; i < clickedItem.sub.length; i++) {
+                        clickedItem.sub[i].visible = true;
+                    }
+                } else {
+                    for (var i = 0; i < clickedItem.sub.length; i++) {
+                        clickedItem.sub[i].visible = false;
+                    }
+                }
+                //scope.opened = null;
+                //scope.opened = TreeDataService.getOpened(scope.meta);
             };
 
             scope.$watch("vaLength", function (newVal) {
@@ -40,9 +53,10 @@
             scope.$watch("vaSrc", function (newVal) {
 
                 if (newVal) {
-                    console.log("vaSrc: ", newVal);
+                    //console.log("vaSrc: ", newVal);
                     scope.meta = TreeDataService.getMeta(newVal, "sub");
-                    console.log("scope.meta: ", scope.meta);
+                    //scope.opened = TreeDataService.getOpened(scope.meta);
+                    //console.log("scope.meta: ", scope.meta);
                     setWindow();
                 }
             });

@@ -41,7 +41,7 @@
             $interval(function () {
                 if (levelsCount > 0 && levelItemsCount > 0) {
                     self.data = { index: null, text: "root", sub: null };
-                    console.log(self.data , levelsCount , levelItemsCount);
+                    //console.log(self.data , levelsCount , levelItemsCount);
                     createDataBranch(self.data, levelsCount, levelItemsCount, 0);
                 }
             }, 1, 1);
