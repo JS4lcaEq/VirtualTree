@@ -32,7 +32,7 @@
         this.template = "{{test}}";
         this.levelsCount = 3;
         this.levelItemsCount = 3;
-        this.data = {  };
+        this.data = {};
         this.dataCount = dataCount;
         this.createData = function (levelsCount, levelItemsCount) {
             var self = this;
@@ -113,7 +113,7 @@
 
     }
 
-    angular.module('app', ["vaVirtualTreeDirective", "vaTemplateDirective", "vaTreeDataService"]);
+    angular.module('app', ["vaVirtualTreeDirective", "vaTemplateDirective", "vaTreeDataService", "vaVirtualRepeaterDirective"]);
 
     angular.module('app').controller('MainCtrl', MainCtrl);
 

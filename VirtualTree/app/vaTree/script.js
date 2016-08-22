@@ -16,6 +16,7 @@
             scope.scriptPath = scriptPath;
             scope.t = t;
             scope.itemTemplate = " template = {{item.index}} / {{item.text}}";
+            scope.template = "{{item.index}}";
 
             var elements = {
 
@@ -51,13 +52,18 @@
 
 
             scope.$watch("vaSrc", function (newVal) {
-
+                scope.meta.length = 0;
+                scope.meta = null;
                 if (newVal) {
-                    //console.log("vaSrc: ", newVal);
-                    scope.meta = TreeDataService.getMeta(newVal, "sub");
-                    //scope.opened = TreeDataService.getOpened(scope.meta);
-                    //console.log("scope.meta: ", scope.meta);
-                    setWindow();
+
+                    console.log("vaSrc: ", newVal);
+                    $interval(function () {
+                        scope.meta = TreeDataService.getMeta(newVal, "sub");
+                        //scope.opened = TreeDataService.getOpened(scope.meta);
+                        //console.log("scope.meta: ", scope.meta);
+                        setWindow();
+                    },1,1);
+
                 }
             });
 
