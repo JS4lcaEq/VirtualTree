@@ -73,14 +73,14 @@
                 return false;
             });
 
-            scope.$watch("vaTemplate", function (newValue) {
-                console.log("$watch vaTemplate", newValue);
-                if (newValue) {
-                    setTemplate(newValue);
-                } else {
-                    setTemplate('{{item}}');
-                }
-            });
+            //scope.$watch("vaTemplate", function (newValue) {
+            //    console.log("$watch vaTemplate", newValue);
+            //    if (newValue) {
+            //        setTemplate(newValue);
+            //    } else {
+            //        setTemplate('{{item}}');
+            //    }
+            //});
 
             scope.$watch("vaLength", function (newVal) {
                 if (newVal) {
@@ -153,7 +153,7 @@
                         elements.list.find("li").replaceWith(newElement);
                     }
                 } catch (error) {
-                    console.log(error);
+                    console.log("error: ", error);
                 }
             }
 
@@ -176,7 +176,10 @@
                         current.indexes.end = current.indexes.max;
                     }
                 }
-                scope.vaCurrentIndex = current.indexes.start;
+                if (scope.vaCurrentIndex) {
+                    scope.vaCurrentIndex = current.indexes.start;
+                }
+                
             }
 
             function setWindow() {
@@ -196,7 +199,7 @@
                 }
                 //scope.hght = { "height": current.kScroll * 100 + "%" };
                 elements.spacer.height(current.kScroll * current.heights.box);
-                console.log(current.kScroll * current.heights.box, " / ", current.heights.box);
+                //console.log(current.kScroll * current.heights.box, " / ", current.heights.box);
                 scope.spacerH = current.heights.spacer = current.kScroll * current.heights.box;
                 current.maxScroll = current.heights.spacer - current.heights.box;
                 current.kReverseScroll = scope.vaSrc.length / current.maxScroll;
@@ -216,11 +219,25 @@
 
 
         return {
-            templateUrl: function () { return scriptPath + "template.html?t=" + t },
+            //templateUrl: function () { return scriptPath + "template.html?t=" + t },
+            template: function (element, attr) {
+                console.log("attr.vaTmplt ", attr.vaTmplt);
+                return '' +
+                '<div class="va-virtual-repeater">' +
+                    '<div class="va-list">' +
+                        '<ul>' +
+                            '<li ng-repeat="(index, item) in window" ng-mouseover="onHover(item, index)" ng-click="onClick(item, index)">' + attr.vaTmplt + '&nbsp;</li>' +
+                        '</ul>' +
+                    '</div>' +
+                    '<div class="va-scroll">' +
+                        '<div></div>' +
+                    '</div>' +
+                '</div>';
+            },
             link: link,
             transclude: false,
             scope: {
-                vaTemplate: "<"
+                vaTmplt: "@"
                 , vaSrc: "<"
                 , vaLength: "<"
                 , vaOnClick: "&"

@@ -1,21 +1,15 @@
 ﻿<!--<ul class="va-virtual-tree">
-    <li ng-repeat="item in data.sub" ng-include="scriptPath+'branch-template.html?t=1'"></li>
-</ul>
-<hr />-->
-<!--<ol class="va-virtual-tree">
-    <li ng-repeat="item in meta.sub" ng-include="scriptPath + 'branch-template.html?t=' + t"></li>
-</ol>-->
-<ul class="va-virtual-tree">
     <li ng-click="onClick(item)"
         ng-class="{'level1':item.level==1, 'level2':item.level==2, 'level3':item.level==3, 'level4':item.level==4}"
         ng-repeat="item in meta">
         [{{item.level}}] {{item.index}} ({{item.opened}} / {{item.visible}}) {{item.obj.text}}
     </li>
-</ul>
+</ul>-->
 <hr />
-<va-virtual-repeater va-length="'10'"
+<va-virtual-repeater va-length="'20'"
                      va-src="meta"
-                     va-template=""  ></va-virtual-repeater>
+                     va-on-click ="onClick(obj)"
+                     va-tmplt="<span ng-class='{level1:item.level==1, level2:item.level==2, level3:item.level==3, level4:item.level==4}'>{{item.obj.text}}/{{item.opened}}</span>"  ></va-virtual-repeater>
 <hr />
 
 

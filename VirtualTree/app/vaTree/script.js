@@ -30,7 +30,9 @@
 
             scope.opened = {};
 
-            scope.onClick = function (clickedItem) {
+            scope.onClick = function (obj) {
+                console.log(obj);
+                var clickedItem = obj.item;
                 clickedItem.opened = !clickedItem.opened;
                 if (clickedItem.opened) {
                     for (var i = 0; i < clickedItem.sub.length; i++) {

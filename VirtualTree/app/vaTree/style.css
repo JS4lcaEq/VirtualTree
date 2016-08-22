@@ -8,15 +8,20 @@ label span {
     display:inline-block;
 }
 
-.va-virtual-tree .level1 {
+.level1 {
 margin-left: 20px;
+
+color:red;
 }
-.va-virtual-tree .level2 {
+ .level2 {
 margin-left: 40px;
+
 }
-.va-virtual-tree .level3 {
+ .level3 {
 margin-left: 60px;
+
 }
-.va-virtual-tree .level4 {
+ .level4 {
 margin-left: 80px;
+
 }

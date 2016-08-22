@@ -14,7 +14,7 @@
     <!-- Bootstrap core CSS -->
     <link href="Content/bootstrap.min.css" rel="stylesheet" />
     <link href="app/vaTree/style.css" rel="stylesheet" />
-    <link href="app/vaDirectiveVirtualRepeater/style.css" rel="stylesheet" />
+    <link href="app/vaDirVirtRepSimple/style.css" rel="stylesheet" />
     <!--<link href="assets/kendo.common.min.css" rel="stylesheet" />
     <link href="assets/kendo.default.min.css" rel="stylesheet" />
     <link href="assets/kendo.default.mobile.min.css" rel="stylesheet" />-->
@@ -82,14 +82,12 @@
         <hr />
         <!--<ul>
             <li ng-repeat="item in ctrl.data.sub" ng-include="'app/vaTree/branch-template.html'"></li>
-        </ul>--> 
+        </ul>-->
         <hr />
         <va-virtual-tree va-src="ctrl.data"></va-virtual-tree>
         <hr />
-        <p>Angular tester - ctrl.test="{{ctrl.test}}"</p>
-        <hr />
-        {{ctrl.template}} = <va-template va-tmplt="ctrl.template"></va-template>
-        <hr />
+
+
         <!--<kendo-grid options="mainGridOptions">
             <div k-detail-template>
                 <kendo-tabstrip>
@@ -130,9 +128,10 @@
     <script src="Scripts/angular.min.js"></script>
     <script src="Scripts/angular-touch.min.js"></script>
     <script src="app/vaTemplate/script.js"></script>
-    <script src="app/vaTree/script.js"></script>
-    <script src="app/vaDirectiveVirtualRepeater/script.js"></script>
+
+    <script src="app/vaDirVirtRepSimple/script.js"></script>
     <script src="app/treeDataService.js"></script>
+    <script src="app/vaTree/script.js"></script>
     <!--<script src="assets/js/kendo.all.min.js"></script>-->
     <script src="app/app.js"></script>
     <script>angular.bootstrap("html", ['app']);</script>
