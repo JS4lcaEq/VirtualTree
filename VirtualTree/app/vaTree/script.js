@@ -31,7 +31,7 @@
             scope.opened = {};
 
             scope.onClick = function (obj) {
-                console.log(obj);
+                console.log("onClick", obj);
                 var clickedItem = obj.item;
                 clickedItem.opened = !clickedItem.opened;
                 if (clickedItem.opened) {
@@ -101,7 +101,7 @@
             templateUrl: function () { return scriptPath + "template.html?t=" + Math.random(); },
             link: link,
             scope: {
-                vaTemplate: "="
+                vaTemp: "="
                 , vaSrc:    "="
                 , vaLength: "="
                 , vaOnClick: "&"

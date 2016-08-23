@@ -72,7 +72,6 @@
     <Content Include="app\vaDirectiveVirtualRepeater\template.html" />
     <Content Include="app\vaDirVirtRepSimple\script.js" />
     <Content Include="app\vaDirVirtRepSimple\style.css" />
-    <Content Include="app\vaDirVirtRepSimple\template.html" />
     <Content Include="app\vaTemplate\script.js" />
     <Content Include="app\vaTree\branch-template.html" />
     <Content Include="app\vaTree\script.js" />

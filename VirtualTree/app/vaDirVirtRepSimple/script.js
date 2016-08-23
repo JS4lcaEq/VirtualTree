@@ -11,7 +11,7 @@
 
         function link(scope, element, attr) {
 
-            console.log("vaDirVirtRep");
+            console.log("vaDirVirtRepSimple");
 
             var elements = {
                 listBox:    element.find(".va-list")
@@ -30,6 +30,8 @@
                 , intervals: { scroll: null }
                 , maxScroll: 0
                 , trigger: false
+                , touchStart: 0
+                
             };
 
             current.heights.box = elements.box.height();
@@ -37,12 +39,13 @@
             scope.window    = [1, 2, 3];
             scope.hght      = { "height": "100%" };
             scope.scroll    = 0;
-            scope.spacerH   = 0;
+            scope.spacerH = 0;
+            scope.count = 0;
 
             elements.scroll.on("scroll", function () {
-                //if(current.trigger){
-                //    current.trigger = false;
-                //}else{
+                if(current.trigger){
+                    current.trigger = false;
+                }else{
                     if (current.intervals.scroll) {
                         $interval.cancel(current.intervals.scroll);
                     }
@@ -52,7 +55,7 @@
                         setIndexes(Math.round(scroll * current.kReverseScroll));
                         setWindow();
                     }, 3, 1);
-                //}
+                }
             });
 
             elements.box.on("wheel", function (event) {
@@ -73,14 +76,50 @@
                 return false;
             });
 
-            //scope.$watch("vaTemplate", function (newValue) {
-            //    console.log("$watch vaTemplate", newValue);
-            //    if (newValue) {
-            //        setTemplate(newValue);
-            //    } else {
-            //        setTemplate('{{item}}');
-            //    }
-            //});
+            elements.listBox.on("touchstart", function (event) {
+                
+                current.touchStart = event.originalEvent.touches[0].pageY + 0;
+
+                console.log("touchstart", current.touchStart, event);
+                //event.preventDefault();
+            }).on("touchmove", function (event) {
+                
+                scope.count++;
+                var wheel = current.touchStart - event.originalEvent.touches[0].pageY;
+                if (wheel > 17 || wheel < -17) {
+                    current.touchStart = event.originalEvent.touches[0].pageY;
+                    scope.$apply(function () {
+                        //onWheel(wheel / 10);
+                        //console.log("touchmove", Math.round(wheel / 20));
+                        if(wheel > 0)
+                        setIndexes(current.indexes.start + 1);
+                        else
+                            setIndexes(current.indexes.start - 1);
+                        //setScroll();
+                        scope.count++;
+                        setWindow();
+                    });
+                    
+                }
+                
+                event.preventDefault();
+            }).on("touchend", "div", function (event) {
+                console.log("touchend");
+                scope.$apply(function () {
+                    
+                });
+            }).on("touchcancel", function (event) {
+                console.log("TOUCHCANCEL");
+            });
+
+            scope.$watch("vaTemplate", function (newValue) {
+                console.log("$watch vaTemplate", newValue);
+                if (newValue) {
+                    //setTemplate(newValue);
+                } else {
+                    //setTemplate('{{item}}');
+                }
+            });
 
             scope.$watch("vaLength", function (newVal) {
                 if (newVal) {
@@ -138,25 +177,6 @@
                 }
             };
 
-            function setTemplate(template) {
-                var tmpl = '<li ng-repeat="(index, item) in window" ng-mouseover="onHover(item, index)"  ng-click="onClick(item, index)">' + template + '&nbsp;</li>';
-                var newElement = null;
-                try {
-                    newElement = angular.element(tmpl);
-                    if (newElement) {
-                        var subScope = scope.$new(false);
-                        $compile(newElement)(subScope);
-                        if (current.subScope) {
-                            current.subScope.$destroy();
-                        }
-                        current.subScope = subScope;
-                        elements.list.find("li").replaceWith(newElement);
-                    }
-                } catch (error) {
-                    console.log("error: ", error);
-                }
-            }
-
             function setIndexes(start) {
                 if (!scope.vaSrc || !current.len) {
                     current.indexes.start = 0;
@@ -199,7 +219,7 @@
                 }
                 //scope.hght = { "height": current.kScroll * 100 + "%" };
                 elements.spacer.height(current.kScroll * current.heights.box);
-                //console.log(current.kScroll * current.heights.box, " / ", current.heights.box);
+                console.log(current.kScroll * current.heights.box, " / ", current.heights.box);
                 scope.spacerH = current.heights.spacer = current.kScroll * current.heights.box;
                 current.maxScroll = current.heights.spacer - current.heights.box;
                 current.kReverseScroll = scope.vaSrc.length / current.maxScroll;
@@ -219,30 +239,32 @@
 
 
         return {
-            //templateUrl: function () { return scriptPath + "template.html?t=" + t },
-            template: function (element, attr) {
-                console.log("attr.vaTmplt ", attr.vaTmplt);
+            template: function (elem, attr) {
+                console.log("attr.vaTemplate ", attr.vaTemplate);
                 return '' +
                 '<div class="va-virtual-repeater">' +
                     '<div class="va-list">' +
                         '<ul>' +
-                            '<li ng-repeat="(index, item) in window" ng-mouseover="onHover(item, index)" ng-click="onClick(item, index)">' + attr.vaTmplt + '&nbsp;</li>' +
+                            '<li ng-repeat="(index, item) in window" ng-mouseover="onHover(item, index)" ng-click="onClick(item, index)">' + attr.vaT + '&nbsp;</li>' +
+                            '<!-- ng-mouseover="onHover(item, index)" ng-click="onClick(item, index)" -->'+
                         '</ul>' +
                     '</div>' +
                     '<div class="va-scroll">' +
                         '<div></div>' +
                     '</div>' +
-                '</div>';
+                '</div>'+
+                '';
             },
             link: link,
             transclude: false,
             scope: {
-                vaTmplt: "@"
-                , vaSrc: "<"
+
+                 vaSrc: "<"
                 , vaLength: "<"
                 , vaOnClick: "&"
                 , vaOnHover: "&"
                 , vaCurrentIndex: "="
+                , vaT: "@"
             }
         }
     }
