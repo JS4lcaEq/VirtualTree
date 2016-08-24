@@ -16,7 +16,7 @@
             scope.scriptPath = scriptPath;
             scope.t = t;
             scope.itemTemplate = " template = {{item.index}} / {{item.text}}";
-            scope.template = "{{item.index}}";
+            scope.template = '<span ng-class="{level1:item.level==1, level2:item.level==2, level3:item.level==3, level4:item.level==4, level5:item.level==5}">{{item.opened}}/{{item.obj.text}}<span>';
 
             var elements = {
 
@@ -34,17 +34,21 @@
                 console.log("onClick", obj);
                 var clickedItem = obj.item;
                 clickedItem.opened = !clickedItem.opened;
-                if (clickedItem.opened) {
-                    for (var i = 0; i < clickedItem.sub.length; i++) {
-                        clickedItem.sub[i].visible = true;
-                    }
-                } else {
-                    for (var i = 0; i < clickedItem.sub.length; i++) {
-                        clickedItem.sub[i].visible = false;
+                if (clickedItem.sub) {
+                    if (clickedItem.opened) {
+
+                        for (var i = 0; i < clickedItem.sub.length; i++) {
+                            clickedItem.sub[i].visible = true;
+                        }
+                    } else {
+                        for (var i = 0; i < clickedItem.sub.length; i++) {
+                            clickedItem.sub[i].visible = false;
+                        }
                     }
                 }
-                //scope.opened = null;
-                //scope.opened = TreeDataService.getOpened(scope.meta);
+
+                scope.opened = null;
+                scope.opened = TreeDataService.getOpened(scope.meta);
             };
 
             scope.$watch("vaLength", function (newVal) {
@@ -58,12 +62,12 @@
                 scope.meta = null;
                 if (newVal) {
 
-                    console.log("vaSrc: ", newVal);
+                    //console.log("vaSrc: ", newVal);
                     $interval(function () {
                         scope.meta = TreeDataService.getMeta(newVal, "sub");
-                        //scope.opened = TreeDataService.getOpened(scope.meta);
-                        //console.log("scope.meta: ", scope.meta);
-                        setWindow();
+                        scope.opened = TreeDataService.getOpened(scope.meta);
+                        console.log("scope.meta: ", scope.meta.length, " scope.opened: ", scope.opened.length);
+                        //setWindow();
                     },1,1);
 
                 }

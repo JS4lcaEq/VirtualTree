@@ -113,7 +113,7 @@
 
     }
 
-    angular.module('app', ["vaVirtualTreeDirective", "vaTemplateDirective", "vaTreeDataService", "vaVirtualRepeaterDirective"]);
+    angular.module('app', ["vaVirtualTreeDirective", "vaTreeDataService", "vaVirtualRepeaterDirective"]);
 
     angular.module('app').controller('MainCtrl', MainCtrl);
 

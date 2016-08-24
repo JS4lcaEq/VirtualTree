@@ -5,7 +5,7 @@
         var items = [];
 
         function link(scope, element, attr) {
-            console.log("simple1");
+            console.log("vr template version");
             var elements = {
                 listBox: element.find(".va-list-box")
                 , list: element.find(".va-list-box ul")
@@ -84,8 +84,8 @@
                 return false;
             });
 
-            scope.$watch("vaTemplate", function () {
-                console.log("$watch vaTemplate");
+            scope.$watch("vaTmplt", function () {
+                console.log("$watch vaTmplt");
                 setTemplate();
             });
 
@@ -98,7 +98,7 @@
             });
 
             scope.$watch("vaSrc", function (nw) {
-                console.log("newValue: ", nw);
+                //console.log("newValue: ", nw);
                 if (nw) {
                     //elements.scrolls.fast.scrollTop(0);
                     current.indexes.max = nw.length - 1;
@@ -207,20 +207,25 @@
                     if (current.indexes.end > current.indexes.max) {
                         current.indexes.end = current.indexes.max
                     }
+                    if (scope.vaCurrentIndex) {
+                        scope.vaCurrentIndex = current.indexes.start;
+                    }
 
-                    scope.vaCurrentIndex = current.indexes.start ;
                 }
             }
 
             function setDataWindow() {
                 scope.dataWindow.length = 0;
-                for (var i = current.indexes.start; i < current.indexes.end; i++) {
-                    scope.dataWindow.push(scope.vaSrc[i]);
+                if (scope.vaSrc && scope.vaSrc.length > 0) {
+                    for (var i = current.indexes.start; i < current.indexes.end; i++) {
+                        scope.dataWindow.push(scope.vaSrc[i]);
+                    }
                 }
+
             }
 
             function setTemplate() {
-                var tmpl = '<li ng-repeat="(index, item) in dataWindow" ng-mouseover="onHover(item, index)"  ng-click="onClick(item, index)">' + scope.vaTemplate + '&nbsp;</li>';
+                var tmpl = '<li ng-repeat="(index, item) in dataWindow" ng-mouseover="onHover(item, index)"  ng-click="onClick(item, index)">' + scope.vaTmplt + '&nbsp;</li>';
                 var newElement = null;
                 try {
                     newElement = angular.element(tmpl);
@@ -333,7 +338,7 @@
             //controller: controller,
             //controllerAs: "ctrl",
             scope: {
-                vaTemplate: "<"
+                vaTmplt: "<"
                 , vaSrc: "<"
                 , vaLength: "<"
                 , vaOnClick: "&"
