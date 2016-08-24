@@ -101,7 +101,7 @@
             templateUrl: function () { return scriptPath + "template.html?t=" + Math.random(); },
             link: link,
             scope: {
-                vaTemp: "="
+                vaTemplat: "<"
                 , vaSrc:    "="
                 , vaLength: "="
                 , vaOnClick: "&"

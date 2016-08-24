@@ -240,7 +240,7 @@
 
         return {
             template: function (elem, attr) {
-                console.log("attr.vaTemplate ", attr.vaTemplate);
+                console.log("attr.vaTemplate = ", attr.vaT);
                 return '' +
                 '<div class="va-virtual-repeater">' +
                     '<div class="va-list">' +
@@ -253,7 +253,7 @@
                         '<div></div>' +
                     '</div>' +
                 '</div>'+
-                '';
+                'vaT = {{vaT}}';
             },
             link: link,
             transclude: false,
@@ -264,7 +264,7 @@
                 , vaOnClick: "&"
                 , vaOnHover: "&"
                 , vaCurrentIndex: "="
-                , vaT: "@"
+                , vaT: "="
             }
         }
     }

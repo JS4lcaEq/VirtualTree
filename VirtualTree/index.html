@@ -84,7 +84,7 @@
             <li ng-repeat="item in ctrl.data.sub" ng-include="'app/vaTree/branch-template.html'"></li>
         </ul>-->
         <hr />
-        <va-virtual-tree va-src="ctrl.data" ></va-virtual-tree>
+        <va-virtual-tree va-src="ctrl.data" va-templat="'{{item.index}}'" ></va-virtual-tree>
         <hr />
 
 
