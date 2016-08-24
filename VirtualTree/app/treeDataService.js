@@ -3,7 +3,9 @@
 
 
     var metaItemIndex = 0;
+    var openedItemIndex = 0;
     var arr = [];
+    var arrOpened = [];
 
     function fn() {
         this.getMeta = function (data, subItemsFieldName) {
@@ -11,13 +13,21 @@
             arr.length = 0;
             var meta = newMeta(null, data);
             meta.opened = true;
+            meta.visible = true;
             //return meta;
             return arr;
         };
 
         this.getOpened = function (meta) {
-            var opened = newOpened(meta);
-            return opened;
+            openedItemIndex = 0;
+            arrOpened.length = 0;
+            for (var i = 0; i < meta.length; i++){
+                if (meta[i].visible) {
+                    arrOpened.push(newOpened(meta[i]));
+                }
+                
+            }
+            return arrOpened;
         };
     }
 
@@ -44,8 +54,6 @@
                 item.sub = [];
                 for (var i = 0; i < obj.sub.length; i++) {
                     item.sub.push(newMeta(item.index, obj.sub[i], level + 1));
-                    //arr.push(item);
-                    //newMeta(item.index, obj.sub[i], level + 1);
                 }
             }
         };
@@ -55,26 +63,7 @@
     }
 
     function newOpened(meta) {
-        var item = {};
-        item.index = meta.index;
-        item.parentIndex = meta.parentIndex;
-        item.meta = meta;
-
-        item.fillSub = function () {
-            if (meta.sub) {
-                item.sub = [];
-                for (var i = 0; i < meta.sub.length; i++) {
-                    item.sub.push(newOpened(meta.sub[i]));
-                }
-            }
-        };
-
-        if (meta.opened) {
-            item.fillSub();
-        } else {
-            item.sub = null;
-        }        
-        return item;
+        return { meta: meta };
     }
 
     angular.module("vaTreeDataService", []);

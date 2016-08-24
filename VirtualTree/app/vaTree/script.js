@@ -16,7 +16,7 @@
             scope.scriptPath = scriptPath;
             scope.t = t;
             scope.itemTemplate = " template = {{item.index}} / {{item.text}}";
-            scope.template = '<span ng-class="{level1:item.level==1, level2:item.level==2, level3:item.level==3, level4:item.level==4, level5:item.level==5}">{{item.opened}}/{{item.obj.text}}<span>';
+            scope.template = '{{index}}/{{item.meta.obj.text}}/{{item.meta.opened}}/{{item.meta.visible}}';//'<span ng-class="{level1:item.level==1, level2:item.level==2, level3:item.level==3, level4:item.level==4, level5:item.level==5}">{{item.meta.opened}}/{{item.meta.obj.text}}<span>';
 
             var elements = {
 
@@ -28,27 +28,26 @@
 
             scope.meta = {};
 
-            scope.opened = {};
+            scope.opened = [];
 
             scope.onClick = function (obj) {
                 console.log("onClick", obj);
                 var clickedItem = obj.item;
-                clickedItem.opened = !clickedItem.opened;
-                if (clickedItem.sub) {
-                    if (clickedItem.opened) {
-
-                        for (var i = 0; i < clickedItem.sub.length; i++) {
-                            clickedItem.sub[i].visible = true;
+                clickedItem.meta.opened = !clickedItem.meta.opened;
+                if (clickedItem.meta.sub) {
+                    if (clickedItem.meta.opened) {
+                        for (var i = 0; i < clickedItem.meta.sub.length; i++) {
+                            clickedItem.meta.sub[i].visible = true;
                         }
                     } else {
-                        for (var i = 0; i < clickedItem.sub.length; i++) {
-                            clickedItem.sub[i].visible = false;
+                        for (var i = 0; i < clickedItem.meta.sub.length; i++) {
+                            clickedItem.meta.sub[i].visible = false;
                         }
                     }
                 }
 
-                scope.opened = null;
-                scope.opened = TreeDataService.getOpened(scope.meta);
+                //scope.opened = null;
+                //scope.opened = TreeDataService.getOpened(scope.meta);
             };
 
             scope.$watch("vaLength", function (newVal) {
@@ -60,11 +59,14 @@
             scope.$watch("vaSrc", function (newVal) {
                 scope.meta.length = 0;
                 scope.meta = null;
+                scope.opened.length = 0;
+                scope.opened = null;
                 if (newVal) {
 
                     //console.log("vaSrc: ", newVal);
                     $interval(function () {
                         scope.meta = TreeDataService.getMeta(newVal, "sub");
+                        scope.meta[0].visible = true;
                         scope.opened = TreeDataService.getOpened(scope.meta);
                         console.log("scope.meta: ", scope.meta.length, " scope.opened: ", scope.opened.length);
                         //setWindow();
