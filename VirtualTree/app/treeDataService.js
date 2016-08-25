@@ -21,6 +21,8 @@
         this.getOpened = function (meta) {
             openedItemIndex = 0;
             arrOpened.length = 0;
+            arrOpened = null;
+            arrOpened = [];
             for (var i = 0; i < meta.length; i++){
                 if (meta[i].visible) {
                     arrOpened.push(newOpened(meta[i]));
@@ -57,6 +59,31 @@
                 }
             }
         };
+        item.open = function () {
+            item.opened = true;
+            if (item.sub && item.sub.length > 0) {
+                for(var i = 0; i < item.sub.length; i++){
+                    item.sub[i].visible = true;
+                }
+            }
+        };
+        item.close = function () {
+            cls(this);
+        };
+
+        function cls(item) {
+            item.opened = false;
+            if (item.sub && item.sub.length > 0) {
+                for (var i = 0; i < item.sub.length; i++) {
+                    var subItem = item.sub[i];
+
+                        cls(subItem);
+                        subItem.visible = false;
+                    
+                }
+            }
+        }
+
         item.fillSub();
         
         return item;

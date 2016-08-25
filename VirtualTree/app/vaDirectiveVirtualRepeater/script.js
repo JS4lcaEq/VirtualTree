@@ -129,7 +129,7 @@
                 }
                 elements.spacers.fast.height(current.height.spacers.fast);
 
-                setIndexes(0);
+                setIndexes();
                 //console.log("$watch vaSrc", nw.length, current.height);
                 if (current.height.box > 0) {
                     setDataWindow();
@@ -184,7 +184,7 @@
 
             function setHeight() {
                 scope.dataWindow.length = 0;
-                current.height.box = 200;
+                current.height.box = 400;
                 current.height.item = 20;
                 elements.box.height(current.height.box);
                 scope.dataWindow.length = 0;
