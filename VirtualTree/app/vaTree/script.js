@@ -16,7 +16,7 @@
             scope.scriptPath = scriptPath;
             scope.t = t;
             scope.itemTemplate = " template = {{item.index}} / {{item.text}}";
-            scope.template = '<span ng-class="{level1:item.meta.level==1, level2:item.meta.level==2, level3:item.meta.level==3, level4:item.meta.level==4, level5:item.meta.level==5, level6:item.meta.level==6}"><span ng-if="item.meta.sub && !item.meta.opened">+</span><span ng-if="item.meta.sub && item.meta.opened">-</span> {{item.meta.obj.text}}<span>';
+            scope.template = '<span ng-class="{level1:item.meta.level==1, level2:item.meta.level==2, level3:item.meta.level==3, level4:item.meta.level==4, level5:item.meta.level==5, level6:item.meta.level==6}"><span ng-if="item.meta.sub && !item.meta.opened">+</span><span ng-if="item.meta.sub && item.meta.opened">-</span> {{item.meta.obj.text}}' + scope.vaTemplate + '<span>';
                 //'{{index}}/{{item.meta.obj.text}}/{{item.meta.opened}}/{{item.meta.visible}}';
             //
 
@@ -45,8 +45,8 @@
                 scope.opened = TreeDataService.getOpened(scope.meta);
             };
 
-            scope.$watch("vaLength", function (newVal) {
-
+            scope.$watch("vaTemplate", function (newVal) {
+                scope.template = '<span ng-class="{level1:item.meta.level==1, level2:item.meta.level==2, level3:item.meta.level==3, level4:item.meta.level==4, level5:item.meta.level==5, level6:item.meta.level==6}"><span ng-if="item.meta.sub && !item.meta.opened">+</span><span ng-if="item.meta.sub && item.meta.opened">-</span> {{item.meta.obj.text}}' + scope.vaTemplate + '<span>';
             });
 
 
@@ -103,7 +103,7 @@
             templateUrl: function () { return scriptPath + "template.html?t=" + Math.random(); },
             link: link,
             scope: {
-                vaTemp: "="
+                vaTemplate: "="
                 , vaSrc:    "="
                 , vaLength: "="
                 , vaOnClick: "&"

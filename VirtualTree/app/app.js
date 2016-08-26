@@ -29,7 +29,7 @@
 
     function MainCtrl($scope, $interval) {
         this.test = "MainCtrl";
-        this.template = "{{test}}";
+        this.template = "{{item.meta.index}}";
         this.levelsCount = 3;
         this.levelItemsCount = 3;
         this.data = {};
