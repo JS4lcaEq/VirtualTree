@@ -1,5 +1,12 @@
 ﻿(function ($interval, $parse, $compile) {
 
+    var s = document.getElementsByTagName('script');
+    var scriptUrl = s[s.length - 1].src;
+    var scriptPath = scriptUrl.replace(/(.*\/)(.*\.js)/i, "$1");
+    var templateFullUrl = scriptPath + "style.css";
+
+    var t = Math.random();
+
     function fn($interval, $parse, $compile) {
 
         var items = [];
@@ -207,7 +214,7 @@
                     if (current.indexes.end > current.indexes.max) {
                         current.indexes.end = current.indexes.max
                     }
-                    if (scope.vaCurrentIndex) {
+                    if (angular.isDefined(scope.vaCurrentIndex)) {
                         scope.vaCurrentIndex = current.indexes.start;
                     }
 
@@ -332,7 +339,7 @@
         //}
 
         return {
-            templateUrl: function () { return "app/vaDirectiveVirtualRepeater/template.html?t=" + Math.random(); },
+            templateUrl: function () { return scriptPath + "template.html?t=" + t; },
             link: link,
             transclude: false,
             //controller: controller,
