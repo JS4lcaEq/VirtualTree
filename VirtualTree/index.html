@@ -13,8 +13,9 @@
 
     <!-- Bootstrap core CSS -->
     <link href="Content/bootstrap.min.css" rel="stylesheet" />
-    <link href="app/vaTree/style.css" rel="stylesheet" />
+    <link href="Content/font-awesome.min.css" rel="stylesheet" />
 
+    <link href="app/vaTree/style.css" rel="stylesheet" />
     <link href="app/vaDirectiveVirtualRepeater/style.css" rel="stylesheet" />
 
     <!-- Custom styles for this template -->
@@ -66,21 +67,23 @@
                 <label><span>Level items count: </span><input class="form-control" ng-model="ctrl.levelItemsCount" /></label>
                 <label><span>template: </span><input class="form-control" ng-model="ctrl.template" /></label>
                 <p><button class="btn btn-default" role="button" ng-click="ctrl.createData(ctrl.levelsCount, ctrl.levelItemsCount)">Reset</button></p>
-                <p>{{ctrl.src.length}}</p>
+                <p>ctrl.src.length = {{ctrl.src.length}}</p>
             </div>
 
             <div class="col-md-6">
-                <h2>Directive Sample</h2>
+                <h2>Data</h2>
                 <p id="va-virtual-repeater-directive">
-
+                    {{ctrl.data}}
+                    <hr />
+                    {{ctrl.dt}}
                 </p>
                 <p></p>
             </div>
         </div>
         <hr />
-        <!--<ul>
+        <ul>
             <li ng-repeat="item in ctrl.data.sub" ng-include="'app/vaTree/branch-template.html'"></li>
-        </ul>-->
+        </ul>
         <hr />
         <va-virtual-tree va-src="ctrl.data" va-template="ctrl.template" ></va-virtual-tree>
         <hr />

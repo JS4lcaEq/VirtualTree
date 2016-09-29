@@ -1,7 +1,7 @@
 ﻿.va-virtual-tree .folder {
-    text-decoration:underline;
     cursor: pointer;
 }
+
 label span {
     width: 150px;
     /*background-color:antiquewhite;*/

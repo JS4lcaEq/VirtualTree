@@ -47,10 +47,10 @@
 
             scope.$watch("vaTemplate", function (newVal) {
                 scope.template = '<span ' +
-                    'ng-class="{level1:item.meta.level==1, level2:item.meta.level==2, level3:item.meta.level==3, level4:item.meta.level==4, level5:item.meta.level==5, level6:item.meta.level==6}">' +
-                    '<span ng-if="item.meta.sub && !item.meta.opened">+</span>' +
-                    '<span ng-if="item.meta.sub && item.meta.opened">-</span> ' +
-                    '{{item.meta.obj.text}}' + scope.vaTemplate + '<span>';
+                    'ng-class="{level1:item.meta.level==1, level2:item.meta.level==2, level3:item.meta.level==3, level4:item.meta.level==4, level5:item.meta.level==5, level6:item.meta.level==6, folder:item.meta.sub}">' +
+                    '<span ng-if="item.meta.sub && !item.meta.opened"><i class="fa fa-folder-o" aria-hidden="true"></i></span>' +
+                    '<span ng-if="item.meta.sub && item.meta.opened"><i class="fa fa-folder-open-o" aria-hidden="true"></i></span> ' +
+                    '<span ng-if="!item.meta.sub"><i class="fa fa-file" aria-hidden="true"></i></span> ' + scope.vaTemplate + '</span>';
             });
 
 
@@ -78,27 +78,6 @@
             function setWindow() {
                 scope.data = scope.vaSrc;
             }
-
-            //scope.onClick = function (item) {
-
-            //};
-
-
-            //function setHeight() {
-
-            //}
-
-            //function setIndexes(startIndex) {
-
-            //}
-
-            //function setDataWindow() {
-              
-            //    scope.dataWindow.length = 0;
-            //    for (var i = current.indexes.start; i < current.indexes.end; i++) {
-            //        scope.dataWindow.push(scope.vaSrc[i]);
-            //    }
-            //}
 
 
         }

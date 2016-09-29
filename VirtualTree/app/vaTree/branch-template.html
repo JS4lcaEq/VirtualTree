@@ -1,5 +1,5 @@
 ﻿<span ng-class="{'folder': item.sub}" ng-click="onClick(item)">[{{item.level}}] {{item.index}} - {{item.parentIndex}} / {{item.obj.text}}</span>
-<ol ng-if="item.opened">
-    <li ng-repeat="item in item.sub" ng-include="scriptPath + 'branch-template.html?t=' + t"></li>
+<ol>
+    <li ng-repeat="item in item.sub" ng-include="app/vaTree/branch-template.html?t=1"></li>
 </ol>
 

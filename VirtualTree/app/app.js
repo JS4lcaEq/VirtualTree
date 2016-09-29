@@ -2,7 +2,14 @@
 
     var dataCount = 0;
 
-    function createDataBranch(parent, levelsCount, levelItemsCount, level) {
+    this.data = [];
+
+    function createDataBranch(parent, levelsCount, levelItemsCount, level, addSubNodes) {
+        var self = this;
+
+        if (addSubNodes == undefined) {
+            addSubNodes = false;
+        }
 
         if (!levelsCount) {
             levelsCount = 2;
@@ -14,102 +21,57 @@
             level = 0;
         }
         for (var i = 0; i < levelItemsCount; i++) {
-            var item = { index: dataCount, text: "text_" + dataCount, sub: null };
-            if (!parent.sub) {
-                parent.sub = [];
+            var item = { index: dataCount, parentIndex: null, text: "text_" + dataCount, sub: null };
+            if (addSubNodes) {
+                if (!parent.sub) {
+                    parent.sub = [];
+                }
+                parent.sub.push(item);
+            } else {
+                self.data.push(item)
             }
-            parent.sub.push(item);
+
+            if (parent) {
+                item.parentIndex = parent.index;
+            }
+
             dataCount++;
             //console.log("step");
             if (level < levelsCount - 1) {
-                createDataBranch(item, levelsCount, levelItemsCount, level + 1);
+                createDataBranch(item, levelsCount, levelItemsCount, level + 1, addSubNodes);
             }
+
+            
         }
     }
 
     function MainCtrl($scope, $interval) {
+        var self = this;
         this.test = "MainCtrl";
-        this.template = "{{item.meta.index}}";
+        this.template = "[{{item.meta.index}}]={{item.meta.obj.text}}";
         this.levelsCount = 3;
         this.levelItemsCount = 3;
         this.data = {};
         this.dataCount = dataCount;
         this.createData = function (levelsCount, levelItemsCount) {
             var self = this;
-            dataCount = 0;
+            dataCount = 1;
             //self.data = null;
             $interval(function () {
                 if (levelsCount > 0 && levelItemsCount > 0) {
-                    self.data = { index: null, text: "root", sub: null };
+                    self.data = { index: 0, text: "root", sub: null };
                     //console.log(self.data , levelsCount , levelItemsCount);
                     createDataBranch(self.data, levelsCount, levelItemsCount, 0);
+                    this.dt = self.data;
                 }
             }, 1, 1);
 
             
         };
 
-        //$scope.mainGridOptions = {
-        //    dataSource: {
-        //        type: "odata",
-        //        transport: {
-        //            read: "//demos.telerik.com/kendo-ui/service/Northwind.svc/Employees"
-        //        },
-        //        pageSize: 5,
-        //        serverPaging: true,
-        //        serverSorting: true
-                
-        //    },
-        //    sortable: true,
-        //    pageable: true,
-        //    reorderable: true,
-        //    dataBound: function () {
-        //        //this.expandRow(this.tbody.find("tr.k-master-row").first());
-        //    },
-        //    columns: [{
-        //        field: "FirstName",
-        //        title: "First Name",
-        //        width: "120px"
-        //    }, {
-        //        field: "LastName",
-        //        title: "Last Name",
-        //        width: "120px"
-        //    }, {
-        //        field: "Country",
-        //        width: "120px"
-        //    }, {
-        //        field: "City",
-        //        width: "120px"
-        //    }, {
-        //        field: "Title"
-        //    }]
-        //};
 
 
-        //$scope.detailGridOptions = function (dataItem) {
-        //    return {
-        //        dataSource: {
-        //            type: "odata",
-        //            transport: {
-        //                read: "//demos.telerik.com/kendo-ui/service/Northwind.svc/Orders"
-        //            },
-        //            serverPaging: true,
-        //            serverSorting: true,
-        //            serverFiltering: true,
-        //            pageSize: 5,
-        //            filter: { field: "EmployeeID", operator: "eq", value: dataItem.EmployeeID }
-        //        },
-        //        scrollable: false,
-        //        sortable: true,
-        //        pageable: true,
-        //        columns: [
-        //        { field: "OrderID", title: "ID", width: "56px" },
-        //        { field: "ShipCountry", title: "Ship Country", width: "110px" },
-        //        { field: "ShipAddress", title: "Ship Address" },
-        //        { field: "ShipName", title: "Ship Name", width: "190px" }
-        //        ]
-        //    };
-        //};
+
 
     }
 
