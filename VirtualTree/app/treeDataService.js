@@ -1,97 +1,71 @@
 ﻿(function () {
 
+    var cnt = 0;
 
+    var testArrayData = [];
 
-    var metaItemIndex = 0;
-    var openedItemIndex = 0;
-    var arr = [];
-    var arrOpened = [];
-
-    function fn() {
-        this.getMeta = function (data, subItemsFieldName) {
-            metaItemIndex = 0;
-            arr.length = 0;
-            var meta = newMeta(null, data);
-            meta.opened = true;
-            meta.visible = true;
-            //return meta;
-            return arr;
-        };
-
-        this.getOpened = function (meta) {
-            openedItemIndex = 0;
-            arrOpened.length = 0;
-            arrOpened = null;
-            arrOpened = [];
-            for (var i = 0; i < meta.length; i++){
-                if (meta[i].visible) {
-                    arrOpened.push(newOpened(meta[i]));
-                }
-                
-            }
-            return arrOpened;
-        };
-    }
-
-    function newMeta(parentIndex, obj, level) {
-        
-        var item = {};
-        metaItemIndex++;
-        item.index = metaItemIndex;
-        if (parentIndex != undefined) {
-            item.parentIndex = parentIndex;
-        } else {
-            item.parentIndex = null;
-        }
+    function generateBranch(parent, levelsCount, itemsCount, isObject, level) {
         if (!level) {
             level = 0;
+            cnt = 0;
+            testArrayData.length = 0;
         }
-        arr.push(item);
-        item.level = level
-        item.obj = obj;
-        item.sub = null;
-        item.opened = false;
-        item.fillSub = function () {
-            if (obj.sub) {
-                item.sub = [];
-                for (var i = 0; i < obj.sub.length; i++) {
-                    item.sub.push(newMeta(item.index, obj.sub[i], level + 1));
-                }
-            }
-        };
-        item.open = function () {
-            item.opened = true;
-            if (item.sub && item.sub.length > 0) {
-                for(var i = 0; i < item.sub.length; i++){
-                    item.sub[i].visible = true;
-                }
-            }
-        };
-        item.close = function () {
-            cls(this);
-        };
+        if (!itemsCount) {
+            itemsCount = 2;
+        }
+        if (!levelsCount) {
+            levelsCount = 2;
+        }
 
-        function cls(item) {
-            item.opened = false;
-            if (item.sub && item.sub.length > 0) {
-                for (var i = 0; i < item.sub.length; i++) {
-                    var subItem = item.sub[i];
+        var branch = [];
+        for (var i = 0; i < itemsCount; i++) {
+            cnt++;
+            var item = { index: cnt, parentIndex: parent.index, text: "text_" + cnt };
 
-                        cls(subItem);
-                        subItem.visible = false;
-                    
-                }
+            if (isObject) {
+                item.parentIndex = undefined;
+                branch.push(item);
+            } else {
+                
+                testArrayData.push(item);
+            }
+            
+            
+            if (level < levelsCount) {
+                generateBranch(item, levelsCount, itemsCount, isObject, level + 1);
             }
         }
 
-        item.fillSub();
-        
-        return item;
+        if (isObject) {
+            if (!parent.sub) {
+                parent.sub = [];
+            }
+
+            parent.sub = branch;
+        }
+
+
+
     }
 
-    function newOpened(meta) {
-        return { meta: meta };
+
+    function fn() {
+
+        var testData = { index: 0, text: "root", sub: null };
+
+        this.getTestData = function (levelsCount, itemsCount, isObject) {
+            generateBranch(testData, levelsCount, itemsCount, isObject, 0);
+            if (isObject) {
+                return testData;
+            } else {
+                return angular.copy(testArrayData);
+            }
+
+        }
+
     }
+
+
 
     angular.module("vaTreeDataService", []);
 

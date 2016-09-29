@@ -33,16 +33,7 @@
             scope.opened = [];
 
             scope.onClick = function (obj) {
-                console.log("onClick", obj);
-                var clickedItem = obj.item;
-                clickedItem.meta.opened = !clickedItem.meta.opened;
-                if (clickedItem.meta.opened) {
-                    clickedItem.meta.open();
-                } else {
-                    clickedItem.meta.close();
-                }
 
-                scope.opened = TreeDataService.getOpened(scope.meta);
             };
 
             scope.$watch("vaTemplate", function (newVal) {
@@ -56,23 +47,7 @@
 
 
             scope.$watch("vaSrc", function (newVal) {
-                scope.meta.length = 0;
-                scope.meta = null;
-                scope.opened.length = 0;
-                scope.opened = null;
-                if (newVal) {
 
-                    //console.log("vaSrc: ", newVal);
-                    $interval(function () {
-                        scope.meta = TreeDataService.getMeta(newVal, "sub");
-                        scope.meta[0].visible = true;
-                        scope.meta[0].open();
-                        scope.opened = TreeDataService.getOpened(scope.meta);
-                        console.log("scope.meta: ", scope.meta.length, " scope.opened: ", scope.opened.length);
-                        //setWindow();
-                    },1,1);
-
-                }
             });
 
             function setWindow() {
