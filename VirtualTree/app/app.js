@@ -5,9 +5,9 @@
     function MainCtrl($scope, $interval, TreeDataService) {
         var self = this;
 
-
+        this.tds = TreeDataService;
         this.test = "MainCtrl";
-        this.template = "[{{item.meta.index}}]={{item.meta.obj.text}}";
+        this.template = "[{{item.ndx}}]={{item.dt.text}}";
         this.levelsCount = 2;
         this.levelItemsCount = 2;
         this.branches = {}
@@ -16,9 +16,12 @@
 
 
         this.reset = function () {
-            this.data = TreeDataService.getTestData(this.levelsCount, this.levelItemsCount, false);
-            this.branches = TreeDataService.getBranchesFromArray(this.data, "id", "idp");
-            this.meta = TreeDataService.getMetaFromBranches(this.branches, 0, "id");
+            this.data.length = 0;
+            this.data = null;
+            this.data = undefined;
+            this.data = this.tds.getTestData(this.levelsCount, this.levelItemsCount, false);
+            //this.branches = this.tds.getBranchesFromArray(this.data, "id", "idp");
+            //this.meta = this.tds.getMetaFromBranches(this.branches, 0, "id");
         };
 
 

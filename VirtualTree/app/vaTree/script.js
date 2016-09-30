@@ -28,7 +28,7 @@
 
             };
 
-            scope.meta = {};
+            scope.branches = {};
 
             scope.opened = [];
 
@@ -38,15 +38,20 @@
 
             scope.$watch("vaTemplate", function (newVal) {
                 scope.template = '<span ' +
-                    'ng-class="{level1:item.meta.level==1, level2:item.meta.level==2, level3:item.meta.level==3, level4:item.meta.level==4, level5:item.meta.level==5, level6:item.meta.level==6, folder:item.meta.sub}">' +
-                    '<span ng-if="item.meta.sub && !item.meta.opened"><i class="fa fa-folder-o" aria-hidden="true"></i></span>' +
-                    '<span ng-if="item.meta.sub && item.meta.opened"><i class="fa fa-folder-open-o" aria-hidden="true"></i></span> ' +
-                    '<span ng-if="!item.meta.sub"><i class="fa fa-file" aria-hidden="true"></i></span> ' + scope.vaTemplate + '</span>';
+                    'ng-class="{level1:item.lv==1, level2:item.lv==2, level3:item.lv==3, level4:item.lv==4, level5:item.lv==5, level6:item.lv==6, folder:item.fldr}">' +
+                    '<span ng-if="item.fldr && !item.meta.opened"><i class="fa fa-folder-o" aria-hidden="true"></i></span>' +
+                    '<span ng-if="item.fldr && item.meta.opened"><i class="fa fa-folder-open-o" aria-hidden="true"></i></span> ' +
+                    '<span ng-if="!item.fldr"><i class="fa fa-file" aria-hidden="true"></i></span> ' + scope.vaTemplate + '</span>';
             });
 
 
 
-            scope.$watch("vaSrc", function (newVal) {
+            scope.$watch("vaSrc.length", function (newVal) {
+                console.log("vaSrc", scope.vaSrc);
+                if (scope.vaSrc && angular.isArray(scope.vaSrc) && scope.vaSrc.length > 0) {
+                    scope.branches = TreeDataService.getBranchesFromArray(scope.vaSrc, "id", "idp");
+                    scope.opened = TreeDataService.getMetaFromBranches(scope.branches, 0, "id");
+                }
 
             });
 
@@ -63,9 +68,9 @@
             scope: {
                 vaTemplate: "="
                 , vaSrc:    "="
-                , vaLength: "="
-                , vaOnClick: "&"
-                , vaOnHover: "&"
+                , vaLength: "=?"
+                , vaOnClick: "&?"
+                , vaOnHover: "&?"
             }
         }
     }

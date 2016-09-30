@@ -58,7 +58,7 @@
             branch[i].mt = meta.length;
             meta.push(item);
             var subIndex = data[idFieldName];
-            console.log(subIndex);
+            //console.log(subIndex);
             var sub = branches[subIndex];
             if (sub) {
                 item.fldr = true;
@@ -83,7 +83,7 @@
                 counters.testDataGenerates++;
 
 
-            //console.log("RUN[", counters.testDataRuns, "/", counters.testDataGenerates, "]: TreeDataService.getTestData length=", counters.testDataIndex, " arguments:", arguments, " oldValues:", oldValues);
+            console.log("RUN[", counters.testDataRuns, "]: TreeDataService.getTestData");
 
 
 

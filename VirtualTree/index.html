@@ -56,27 +56,27 @@
     </nav>
 
     <!-- Main jumbotron for a primary marketing message or call to action -->
-    <div class="jumbotron">
+    <!--<div class="jumbotron">
         <div class="container">
             <h1>Virtual Tree</h1>
             <p>AngularJS simple directive to display tree.</p>
         </div>
-    </div>
+    </div>-->
 
-    <div class="container">
+    <div class="container" style="padding-top: 50px;">
         <!-- Example row of columns -->
         <div class="row">
-            <div class="col-md-5 form-inline">
+            <div class="col-md-4">
                 <h2>Data Source</h2>
-                <label><span>Levels count: </span><input class="form-control" ng-model="ctrl.levelsCount" /></label>
-                <label><span>Level items count: </span><input class="form-control" ng-model="ctrl.levelItemsCount" /></label>
-                <label><span>return object: </span><input type="checkbox" class="form-control" ng-model="ctrl.isObject" /></label>
+                <label class="form-inline"><span>Levels count: </span><input class="form-control" ng-model="ctrl.levelsCount" /></label>
+                <label class="form-inline"><span>Level items count: </span><input class="form-control" ng-model="ctrl.levelItemsCount" /></label>
+                <label class="form-inline"><span>return object: </span><input type="checkbox" class="form-control" ng-model="ctrl.isObject" /></label>
                 <label><span>template: </span><input class="form-control" ng-model="ctrl.template" /></label>
                 <p><button class="btn btn-default" role="button" ng-click="ctrl.reset()">Reset</button></p>
                 <p>ctrl.src.length = {{ctrl.src.length}}</p>
             </div>
 
-            <div class="col-md-7">
+            <div class="col-md-8">
                 <h2>Data</h2>
                 <p id="va-virtual-repeater-directive">
                     {{ctrl.data[0]}}<br />
@@ -85,50 +85,24 @@
                     ...<br />
                     {{ctrl.data[ctrl.data.length-1]}}<br />
                 </p>
-
+                <!--<hr />
                 <p>
                     {{ctrl.branches[0]}}
                 </p>
+                <hr />
                 <p>
-                    {{ctrl.meta[0]}}/{{ctrl.data[ctrl.meta[0].dt]}}<br />
-                    {{ctrl.meta[1]}}/{{ctrl.data[ctrl.meta[1].dt]}}<br />
-                    {{ctrl.meta[2]}}/{{ctrl.data[ctrl.meta[2].dt]}}<br />
+                    {{ctrl.meta[0]}}<br />
+                    {{ctrl.meta[1]}}<br />
+                    {{ctrl.meta[2]}}<br />
                     ...<br />
-                    {{ctrl.meta[ctrl.meta.length-1]}}/{{ctrl.data[ctrl.meta[ctrl.meta.length-1].dt]}}
-                </p>
+                    {{ctrl.meta[ctrl.meta.length-1]}}
+                </p>-->
             </div>
         </div>
-        <hr />
-        <ul>
-            <li ng-repeat="item in ctrl.data.sub" ng-include="'app/vaTree/branch-template.html'"></li>
-        </ul>
-        <hr />
         
         <hr />
+        <va-virtual-tree va-template="ctrl.template" va-src="ctrl.data" va-length="'10'"></va-virtual-tree>
 
-
-        <!--<kendo-grid options="mainGridOptions">
-            <div k-detail-template>
-                <kendo-tabstrip>
-                    <ul>
-                        <li class="k-state-active">Orders</li>
-                        <li>Contact information</li>
-                    </ul>
-                    <div>
-                        <div kendo-grid k-options="detailGridOptions(dataItem)"></div>
-                    </div>
-                    <div>
-                        <ul class="contact-info-form">
-                            <li><label>Country:</label> <input class="k-textbox" ng-model="dataItem.Country" /></li>
-                            <li><label>City:</label> <input class="k-textbox" ng-model="dataItem.City" /></li>
-                            <li><label>Address:</label> {{dataItem.Address}}</li>
-                            <li><label>Home phone:</label> {{dataItem.HomePhone}}</li>
-                        </ul>
-                    </div>
-                </kendo-tabstrip>
-            </div>
-        </kendo-grid>
-        <hr />-->
         <footer>
             <p>Virtual Tree &copy; VAsoft 2016</p>
         </footer>

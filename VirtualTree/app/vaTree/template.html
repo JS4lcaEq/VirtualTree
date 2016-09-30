@@ -1,14 +1,9 @@
-﻿<div class="va-virtual-tree">
-    <va-virtual-repeater va-length="'30'"
+﻿opened = {{vaSrc.length}}
+<div class="va-virtual-tree">
+    <va-virtual-repeater va-length="'19'"
                          va-src="opened"
                          va-on-click="onClick(obj)"
                          va-tmplt="template">
     </va-virtual-repeater>
 </div>
 
-<hr />
-{{meta.length}}
-<hr />
-{{opened.length}}
-<hr />
-{{template}}
