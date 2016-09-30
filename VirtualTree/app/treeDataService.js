@@ -1,13 +1,18 @@
 ﻿(function () {
 
-    var cnt = 0;
+    var counters = {
+        testDataIndex: 0,
+        testDataRuns: 0,
+        testDataGenerates: 0,
+        branchesRuns: 0
+    };
 
     var testArrayData = [];
 
     function generateBranch(parent, levelsCount, itemsCount, isObject, level) {
         if (!level) {
             level = 0;
-            cnt = 0;
+            counters.testDataIndex = 0;
             testArrayData.length = 0;
         }
         if (!itemsCount) {
@@ -19,11 +24,11 @@
 
         var branch = [];
         for (var i = 0; i < itemsCount; i++) {
-            cnt++;
-            var item = { index: cnt, parentIndex: parent.index, text: "text_" + cnt };
+            counters.testDataIndex++;
+            var item = { id: counters.testDataIndex, idp: parent.id, text: "text_" + counters.testDataIndex };
 
             if (isObject) {
-                item.parentIndex = undefined;
+                item.idp = undefined;
                 branch.push(item);
             } else {
                 
@@ -43,29 +48,74 @@
 
             parent.sub = branch;
         }
-
-
-
     }
 
+    function generateMetaBranch(branches, branchIndex, idFieldName, meta, level) {
+        var branch = branches[branchIndex];
+        for (var i = 0; i < branch.length; i++) {
+            var data = branch[i];
+            var item = { index: meta.length, folder: false, open: false, level: level, data: data };
+            meta.push(item);
+            var subIndex = data[idFieldName];
+            var sub = branches[subIndex];
+            if (sub) {
+                item.folder = true;
+                generateMetaBranch(branches, subIndex, idFieldName, meta, level + 1);
+            }
+        }
+    }
 
     function fn() {
 
-        var testData = { index: 0, text: "root", sub: null };
+        var testData = null;
+        
 
         this.getTestData = function (levelsCount, itemsCount, isObject) {
-            generateBranch(testData, levelsCount, itemsCount, isObject, 0);
+            
+            counters.testDataRuns++;
+
+                testData = null;
+                testData = { id: 0, text: "root", sub: null };
+                testArrayData.length = 0;
+                generateBranch(testData, levelsCount, itemsCount, isObject, 0);
+                counters.testDataGenerates++;
+
+
+            //console.log("RUN[", counters.testDataRuns, "/", counters.testDataGenerates, "]: TreeDataService.getTestData length=", counters.testDataIndex, " arguments:", arguments, " oldValues:", oldValues);
+
+
+
             if (isObject) {
                 return testData;
             } else {
-                return angular.copy(testArrayData);
+                return testArrayData;
             }
 
         }
 
+        this.getBranchesFromArray = function (arr, idFieldName, idpFieldName) {
+            var branches = {};
+            for (var i = 0; i < arr.length; i++) {
+                var id = arr[i][idFieldName];
+                var idp = arr[i][idpFieldName];
+                if (!branches[idp]) {
+                    branches[idp] = [];
+                }
+                branches[idp].push(arr[i]);
+            }
+            counters.branchesRuns++;
+            console.log("RUN[", counters.branchesRuns, "] TreeDataService.getBranchesFromArray arr.length=", arr.length);
+
+            return branches;
+        };
+
+        this.getMetaFromBranches = function (branches, rootBranchIndex, idFieldName) {
+            var meta = [];
+            generateMetaBranch(branches, rootBranchIndex, idFieldName, meta, 0);
+            return meta;
+        };
+
     }
-
-
 
     angular.module("vaTreeDataService", []);
 
