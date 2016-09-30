@@ -53,13 +53,15 @@
     function generateMetaBranch(branches, branchIndex, idFieldName, meta, level) {
         var branch = branches[branchIndex];
         for (var i = 0; i < branch.length; i++) {
-            var data = branch[i];
-            var item = { index: meta.length, folder: false, open: false, level: level, data: data };
+            var data = branch[i].dt;
+            var item = { ndx: meta.length, bh: branchIndex, fldr: false, pn: false, lv: level, dt: data };
+            branch[i].mt = meta.length;
             meta.push(item);
             var subIndex = data[idFieldName];
+            console.log(subIndex);
             var sub = branches[subIndex];
             if (sub) {
-                item.folder = true;
+                item.fldr = true;
                 generateMetaBranch(branches, subIndex, idFieldName, meta, level + 1);
             }
         }
@@ -101,7 +103,7 @@
                 if (!branches[idp]) {
                     branches[idp] = [];
                 }
-                branches[idp].push(arr[i]);
+                branches[idp].push({ dt: arr[i], mt: null });
             }
             counters.branchesRuns++;
             console.log("RUN[", counters.branchesRuns, "] TreeDataService.getBranchesFromArray arr.length=", arr.length);

@@ -87,14 +87,14 @@
                 </p>
 
                 <p>
-                    {{ctrl.branches[0].length}}
+                    {{ctrl.branches[0]}}
                 </p>
                 <p>
-                    {{ctrl.meta[0]}}<br />
-                    {{ctrl.meta[1]}}<br />
-                    {{ctrl.meta[2]}}<br />
+                    {{ctrl.meta[0]}}/{{ctrl.data[ctrl.meta[0].dt]}}<br />
+                    {{ctrl.meta[1]}}/{{ctrl.data[ctrl.meta[1].dt]}}<br />
+                    {{ctrl.meta[2]}}/{{ctrl.data[ctrl.meta[2].dt]}}<br />
                     ...<br />
-                    {{ctrl.meta[ctrl.meta.length-1]}}
+                    {{ctrl.meta[ctrl.meta.length-1]}}/{{ctrl.data[ctrl.meta[ctrl.meta.length-1].dt]}}
                 </p>
             </div>
         </div>
