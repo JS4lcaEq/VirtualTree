@@ -9,7 +9,9 @@
 
     var testArrayData = [];
 
-    function generateBranch(parent, levelsCount, itemsCount, isObject, level) {
+    // рекурсивная, строит ветку тестовых данных
+    function generateBranch(parent, levelsCount, itemsCount, isObject, level, idFieldName, idParentFieldName) {
+        console.log("generateBranch idFieldName=", idFieldName, " idParentFieldName=", idParentFieldName);
         if (!level) {
             level = 0;
             counters.testDataIndex = 0;
@@ -25,10 +27,11 @@
         var branch = [];
         for (var i = 0; i < itemsCount; i++) {
             counters.testDataIndex++;
-            var item = { id: counters.testDataIndex, idp: parent.id, text: "text_" + counters.testDataIndex };
-
+            var item = {text: "text_" + counters.testDataIndex };
+            item[idFieldName] = counters.testDataIndex;
+            item[idParentFieldName] = parent[idFieldName];
             if (isObject) {
-                item.idp = undefined;
+                item[idParentFieldName] = undefined;
                 branch.push(item);
             } else {
                 
@@ -37,7 +40,7 @@
             
             
             if (level < levelsCount) {
-                generateBranch(item, levelsCount, itemsCount, isObject, level + 1);
+                generateBranch(item, levelsCount, itemsCount, isObject, level + 1, idFieldName, idParentFieldName);
             }
         }
 
@@ -50,36 +53,50 @@
         }
     }
 
+    // рекурсивная, строит ветку дерева (мета данные)
     function generateMetaBranch(branches, branchIndex, idFieldName, meta, level) {
         var branch = branches[branchIndex];
-        for (var i = 0; i < branch.length; i++) {
-            var data = branch[i].dt;
-            var item = { ndx: meta.length, bh: branchIndex, fldr: false, pn: false, lv: level, dt: data };
-            branch[i].mt = meta.length;
+        for (var i = 0; i < branch.items.length; i++) {
+            var data = branch.items[i].dt;
+            var item = { // элемент ветки дерева (мета данные)
+                ndx: meta.length, // числовой индекс мета массива 
+                bh: branchIndex,  // строковый индекс ветки дерева (равен значению поля "parentFieldName" исходного массива элементов дерева)
+                fldr: false,      // признак папка
+                pn: false,        // признак папка открыта
+                lv: level,        // уровень дерева
+                dt: data          // элемент исходного массива элементов дерева 
+            };
+            //branch.items[i].mt = meta.length;
             meta.push(item);
             var subIndex = data[idFieldName];
             //console.log(subIndex);
             var sub = branches[subIndex];
             if (sub) {
                 item.fldr = true;
-                generateMetaBranch(branches, subIndex, idFieldName, meta, level + 1);
+                if (sub.opened) {
+                    item.pn = true;
+                    generateMetaBranch(branches, subIndex, idFieldName, meta, level + 1);
+                }
+                
             }
         }
     }
+
+    
 
     function fn() {
 
         var testData = null;
         
 
-        this.getTestData = function (levelsCount, itemsCount, isObject) {
+        this.getTestData = function (levelsCount, itemsCount, isObject, idFieldName, idParentFieldName) {
             
             counters.testDataRuns++;
 
                 testData = null;
                 testData = { id: 0, text: "root", sub: null };
                 testArrayData.length = 0;
-                generateBranch(testData, levelsCount, itemsCount, isObject, 0);
+                generateBranch(testData, levelsCount, itemsCount, isObject, 0, idFieldName, idParentFieldName);
                 counters.testDataGenerates++;
 
 
@@ -101,9 +118,9 @@
                 var id = arr[i][idFieldName];
                 var idp = arr[i][idpFieldName];
                 if (!branches[idp]) {
-                    branches[idp] = [];
+                    branches[idp] = {opened:false, items:[]};
                 }
-                branches[idp].push({ dt: arr[i], mt: null });
+                branches[idp].items.push({ dt: arr[i], mt: null });
             }
             counters.branchesRuns++;
             console.log("RUN[", counters.branchesRuns, "] TreeDataService.getBranchesFromArray arr.length=", arr.length);

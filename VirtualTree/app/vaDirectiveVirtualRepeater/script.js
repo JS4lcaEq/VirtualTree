@@ -224,7 +224,7 @@
             function setDataWindow() {
                 scope.dataWindow.length = 0;
                 if (scope.vaSrc && scope.vaSrc.length > 0) {
-                    for (var i = current.indexes.start; i < current.indexes.end; i++) {
+                    for (var i = current.indexes.start; i <= current.indexes.end; i++) {
                         scope.dataWindow.push(scope.vaSrc[i]);
                     }
                 }

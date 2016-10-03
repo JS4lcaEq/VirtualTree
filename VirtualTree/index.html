@@ -70,10 +70,11 @@
                 <h2>Data Source</h2>
                 <label class="form-inline"><span>Levels count: </span><input class="form-control" ng-model="ctrl.levelsCount" /></label>
                 <label class="form-inline"><span>Level items count: </span><input class="form-control" ng-model="ctrl.levelItemsCount" /></label>
-                <label class="form-inline"><span>return object: </span><input type="checkbox" class="form-control" ng-model="ctrl.isObject" /></label>
+                <label class="form-inline"><span>id field name: </span><input class="form-control" ng-model="ctrl.idFieldName" /></label>
+                <label class="form-inline"><span>parent id field name: </span><input class="form-control" ng-model="ctrl.idParentFieldName" /></label>
                 <label><span>template: </span><input class="form-control" ng-model="ctrl.template" /></label>
                 <p><button class="btn btn-default" role="button" ng-click="ctrl.reset()">Reset</button></p>
-                <p>ctrl.src.length = {{ctrl.src.length}}</p>
+
             </div>
 
             <div class="col-md-8">
@@ -82,29 +83,19 @@
                     {{ctrl.data[0]}}<br />
                     {{ctrl.data[1]}}<br />
                     {{ctrl.data[2]}}<br />
+                    {{ctrl.data[3]}}<br />
+                    {{ctrl.data[4]}}<br />
                     ...<br />
                     {{ctrl.data[ctrl.data.length-1]}}<br />
                 </p>
-                <!--<hr />
-                <p>
-                    {{ctrl.branches[0]}}
-                </p>
-                <hr />
-                <p>
-                    {{ctrl.meta[0]}}<br />
-                    {{ctrl.meta[1]}}<br />
-                    {{ctrl.meta[2]}}<br />
-                    ...<br />
-                    {{ctrl.meta[ctrl.meta.length-1]}}
-                </p>-->
             </div>
         </div>
         
-        <hr />
-        <va-virtual-tree va-template="ctrl.template" va-src="ctrl.data" va-length="'10'"></va-virtual-tree>
+
+        <va-virtual-tree va-template="ctrl.template" va-src="ctrl.data" va-id-field-name="ctrl.idFieldName" va-id-parent-field-name="ctrl.idParentFieldName" va-length="'10'"></va-virtual-tree>
 
         <footer>
-            <p>Virtual Tree &copy; VAsoft 2016</p>
+            <!--<p>Virtual Tree &copy; VAsoft 2016</p>-->
         </footer>
     </div>
     <pre>
