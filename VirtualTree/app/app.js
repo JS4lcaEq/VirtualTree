@@ -3,6 +3,7 @@
 
 
     function MainCtrl($scope, $interval, TreeDataService) {
+
         var self = this;
 
         this.tds = TreeDataService;
@@ -16,15 +17,11 @@
         this.data = [];
         this.meta = [];
 
-
         this.reset = function () {
             this.data.length = 0;
             this.data = [];
             self.data = this.tds.getTestData(this.levelsCount, this.levelItemsCount, false, this.idFieldName, this.idParentFieldName);
         };
-
-
-
 
     }
 
