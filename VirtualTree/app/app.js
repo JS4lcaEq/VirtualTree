@@ -23,6 +23,10 @@
             self.data = this.tds.getTestData(this.levelsCount, this.levelItemsCount, false, this.idFieldName, this.idParentFieldName);
         };
 
+        this.onSearchFieldChange = function (model) {
+            var findItems = self.tds.findItemsByText();
+        };
+
     }
 
     angular.module('app', ["vaVirtualTreeDirective", "vaTreeDataService", "vaVirtualRepeaterDirective"]);

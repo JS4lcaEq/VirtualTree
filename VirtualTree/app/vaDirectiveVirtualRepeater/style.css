@@ -9,7 +9,7 @@
          height: 100%;        
          float: left;        
          margin-right: -100%;
-         background:  linear-gradient(#eee, #eee) 0 50px no-repeat;
+         /*background:  linear-gradient(#eee, #eee) 0 50px no-repeat;*/
          background-size: 100% 30px;
     }
 
@@ -20,7 +20,7 @@
         height: 100%;
         float: right;
         overflow-y: auto;
-        border-left: solid 1px #808080;
+        border-left: solid 1px #ccc;
     }
 
     .va-virtual-repeater .va-slider {

@@ -70,6 +70,7 @@
                 <h2>Data Source</h2>
                 <label class="form-inline"><span>Levels count: </span><input class="form-control" ng-model="ctrl.levelsCount" /></label>
                 <label class="form-inline"><span>Level items count: </span><input class="form-control" ng-model="ctrl.levelItemsCount" /></label>
+                <label class="form-inline"><span>search: </span><input class="form-control" ng-model="ctrl.search" /></label>
                 <label class="form-inline"><span>id field name: </span><input class="form-control" ng-model="ctrl.idFieldName" /></label>
                 <label class="form-inline"><span>parent id field name: </span><input class="form-control" ng-model="ctrl.idParentFieldName" /></label>
                 <label><span>template: </span><input class="form-control" ng-model="ctrl.template" /></label>
@@ -92,7 +93,14 @@
         </div>
         
 
-        <va-virtual-tree va-template="ctrl.template" va-src="ctrl.data" va-id-field-name="ctrl.idFieldName" va-id-parent-field-name="ctrl.idParentFieldName" va-length="'10'"></va-virtual-tree>
+        <va-virtual-tree 
+                         va-template="ctrl.template" 
+                         va-src="ctrl.data" 
+                         va-id-field-name="ctrl.idFieldName" 
+                         va-id-parent-field-name="ctrl.idParentFieldName" 
+                         va-length="'10'"
+                         va-mask="ctrl.search"
+                         va-text-field-name="'text'"></va-virtual-tree>
 
         <footer>
             <!--<p>Virtual Tree &copy; VAsoft 2016</p>-->

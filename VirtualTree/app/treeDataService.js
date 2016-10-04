@@ -11,7 +11,7 @@
 
     // рекурсивная, строит ветку тестовых данных
     function generateBranch(parent, levelsCount, itemsCount, isObject, level, idFieldName, idParentFieldName) {
-        console.log("generateBranch idFieldName=", idFieldName, " idParentFieldName=", idParentFieldName);
+        //console.log("generateBranch idFieldName=", idFieldName, " idParentFieldName=", idParentFieldName);
         if (!level) {
             level = 0;
             counters.testDataIndex = 0;
@@ -100,7 +100,7 @@
                 counters.testDataGenerates++;
 
 
-            console.log("RUN[", counters.testDataRuns, "]: TreeDataService.getTestData");
+            //console.log("RUN[", counters.testDataRuns, "]: TreeDataService.getTestData");
 
 
 
@@ -123,7 +123,7 @@
                 branches[idp].items.push({ dt: arr[i], mt: null });
             }
             counters.branchesRuns++;
-            console.log("RUN[", counters.branchesRuns, "] TreeDataService.getBranchesFromArray arr.length=", arr.length);
+            //console.log("RUN[", counters.branchesRuns, "] TreeDataService.getBranchesFromArray arr.length=", arr.length);
 
             return branches;
         };
@@ -132,6 +132,23 @@
             var meta = [];
             generateMetaBranch(branches, rootBranchIndex, idFieldName, meta, 0);
             return meta;
+        };
+
+        this.findItemsByText = function (branches, text, textFieldName) {
+            //console.log("findItemsByText: ", text, textFieldName);
+            var findedItems = [];
+            var rg = RegExp(text, "i");
+            angular.forEach(branches, function (branch, key) {
+                //console.log("findItemsByText: [", key, "] = ", branch);
+                for (var i = 0; i < branch.items.length; i++) {
+                    var srcText = branch.items[i].dt[textFieldName];
+                    //console.log("findItemsByText: ", srcText);
+                    if (rg.test(srcText)) {
+                        findedItems.push(branch.items[i]);
+                    }
+                }
+            });
+            return findedItems;
         };
 
     }
