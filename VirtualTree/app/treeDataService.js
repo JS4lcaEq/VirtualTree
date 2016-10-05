@@ -11,7 +11,7 @@
 
     // рекурсивная, строит ветку тестовых данных
     function generateBranch(parent, levelsCount, itemsCount, isObject, level, idFieldName, idParentFieldName) {
-        //console.log("generateBranch idFieldName=", idFieldName, " idParentFieldName=", idParentFieldName);
+        // console.log("generateBranch idFieldName=", idFieldName, " idParentFieldName=", idParentFieldName);
         if (!level) {
             level = 0;
             counters.testDataIndex = 0;
@@ -54,33 +54,65 @@
     }
 
     // рекурсивная, строит ветку дерева (мета данные)
-    function generateMetaBranch(branches, branchIndex, idFieldName, meta, level) {
+    function generateMetaBranch(branches, branchIndex, idFieldName, meta, level, hideClosedFolders) {
         var branch = branches[branchIndex];
-        for (var i = 0; i < branch.items.length; i++) {
-            var data = branch.items[i].dt;
-            var item = { // элемент ветки дерева (мета данные)
-                ndx: meta.length, // числовой индекс мета массива 
-                bh: branchIndex,  // строковый индекс ветки дерева (равен значению поля "parentFieldName" исходного массива элементов дерева)
-                fldr: false,      // признак папка
-                pn: false,        // признак папка открыта
-                lv: level,        // уровень дерева
-                dt: data          // элемент исходного массива элементов дерева 
-            };
-            //branch.items[i].mt = meta.length;
-            meta.push(item);
-            var subIndex = data[idFieldName];
-            //console.log(subIndex);
-            var sub = branches[subIndex];
-            if (sub) {
-                item.fldr = true;
-                if (sub.opened) {
-                    item.pn = true;
-                    generateMetaBranch(branches, subIndex, idFieldName, meta, level + 1);
-                }
+        if (branch) {
+            for (var i = 0; i < branch.items.length; i++) {
+                var data = branch.items[i].dt;
+                var subIndex = data[idFieldName];
+                var sub = branches[subIndex];
+
+                var item = { // элемент ветки дерева (мета данные)
+                    ndx: meta.length, // числовой индекс мета массива 
+                    bh: branchIndex,  // строковый индекс ветки дерева (равен значению поля "parentFieldName" исходного массива элементов дерева)
+                    fldr: false,      // признак папка
+                    pn: false,        // признак папка открыта
+                    lv: level,        // уровень дерева
+                    dt: data,         // элемент исходного массива элементов дерева 
+                    fd: branch.items[i].finded // признак что элемент найден текстовым поиском
+                };
+                branch.items[i].mt = meta.length;
+
+                if (hideClosedFolders) {
+                    
+                    if (sub) {
+                        item.fldr = true;
+                        if (sub.opened || branch.items[i].finded) {
+                            item.pn = sub.opened;
+                            meta.push(item);
+                            if (sub.opened) {
+                                generateMetaBranch(branches, subIndex, idFieldName, meta, level + 1, hideClosedFolders);
+                            } 
+                        }
+                    } else {
+                        if (branch.items[i].finded) {
+                            meta.push(item);
+                        }
+                        
+                    }
+                } else {
+                    meta.push(item);
+                    if (sub) {
+                        item.fldr = true;
+                        if (sub.opened) {
+                            item.pn = true;
+                            generateMetaBranch(branches, subIndex, idFieldName, meta, level + 1, hideClosedFolders);
+                        }
                 
+                    }
+                }
+
+                
+
+                
+
+
             }
         }
+
     }
+
+   
 
     
 
@@ -88,6 +120,7 @@
 
         var testData = null;
         
+        var self = this;
 
         this.getTestData = function (levelsCount, itemsCount, isObject, idFieldName, idParentFieldName) {
             
@@ -120,20 +153,33 @@
                 if (!branches[idp]) {
                     branches[idp] = {opened:false, items:[]};
                 }
-                branches[idp].items.push({ dt: arr[i], mt: null });
+                
+
+                branches[idp].items.push({ dt: arr[i], mt: null, bh: idp, bhi: branches[idp].items.length });
+            }
+            for (var i = 0; i < arr.length; i++) {
+                var id = arr[i][idFieldName];
+                var idp = arr[i][idpFieldName];
+                if (branches[id]) {
+                    //console.log("getBranchesFromArray: id=", id);
+                    branches[id].parent = idp;
+                    branches[id].item = arr[i];
+                }
+               
             }
             counters.branchesRuns++;
-            //console.log("RUN[", counters.branchesRuns, "] TreeDataService.getBranchesFromArray arr.length=", arr.length);
+            // console.log("RUN[", counters.branchesRuns, "] TreeDataService.getBranchesFromArray arr.length=", arr.length);
 
             return branches;
         };
 
-        this.getMetaFromBranches = function (branches, rootBranchIndex, idFieldName) {
+        this.getMetaFromBranches = function (branches, rootBranchIndex, idFieldName, hideClosedFolders) {
             var meta = [];
-            generateMetaBranch(branches, rootBranchIndex, idFieldName, meta, 0);
+            generateMetaBranch(branches, rootBranchIndex, idFieldName, meta, 0, hideClosedFolders);
             return meta;
         };
 
+        // возвращает найденные элементы, устанавливает признак найден (finded = true)
         this.findItemsByText = function (branches, text, textFieldName) {
             //console.log("findItemsByText: ", text, textFieldName);
             var findedItems = [];
@@ -144,11 +190,28 @@
                     var srcText = branch.items[i].dt[textFieldName];
                     //console.log("findItemsByText: ", srcText);
                     if (rg.test(srcText)) {
+                        branch.items[i].finded = true;
                         findedItems.push(branch.items[i]);
+                        //console.log("findItemsByText: item=", branch.items[i]);
                     }
                 }
             });
             return findedItems;
+        };
+
+
+        // рекурсивная, устанавливает признак открыто (opened = true) для всех веток от указанной и по пути до корня дерева
+        this.openPathBranchesByBranchId = function (branches, branchId) {
+            branches[branchId].opened = true;
+            if (branches[branchId].parent) {
+                self.openPathBranchesByBranchId(branches, branches[branchId].parent);
+            }
+        };
+
+        this.closeAllBranches = function (branches) {
+            angular.forEach(branches, function (branch, key) {
+                branch.opened = false;
+            });
         };
 
     }

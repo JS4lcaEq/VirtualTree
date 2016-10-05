@@ -18,9 +18,17 @@
         this.meta = [];
 
         this.reset = function () {
-            this.data.length = 0;
-            this.data = [];
-            self.data = this.tds.getTestData(this.levelsCount, this.levelItemsCount, false, this.idFieldName, this.idParentFieldName);
+            if (self.data) {
+                self.data.length = 0;
+                self.data = null;
+            }
+
+            //self.data = [];
+            $interval(function () {
+                self.data = self.tds.getTestData(self.levelsCount, self.levelItemsCount, false, self.idFieldName, self.idParentFieldName);
+                //$scope.$apply();
+            }, 10, 1);
+            
         };
 
         this.onSearchFieldChange = function (model) {

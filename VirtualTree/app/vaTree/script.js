@@ -26,7 +26,7 @@
             };
 
             var current = {
-
+                findedItems: []
             };
 
             scope.branches = {};
@@ -48,20 +48,24 @@
                 
                 var branchIndex = item.item.dt[scope.vaIdFieldName];
                 //console.log("onClick bh=", branchIndex, " item=", item);
-                scope.branches[branchIndex].opened = !scope.branches[branchIndex].opened;
-                //if (scope.branches[branchIndex].opened) {
-                //    if (!scope.vaOpenedBranches) {
-                //        scope.vaOpenedBranches = [];
-                //    }
-                //    scope.vaOpenedBranches.push(branchIndex);
-                //}
-                scope.vaOpenedBranches = getOpenedBranches(scope.branches);
-                scope.opened = TreeDataService.getMetaFromBranches(scope.branches, 0, scope.vaIdFieldName);
+                if (scope.branches[branchIndex]) {
+
+                    scope.branches[branchIndex].opened = !scope.branches[branchIndex].opened;
+                    //if (scope.branches[branchIndex].opened) {
+                    //    if (!scope.vaOpenedBranches) {
+                    //        scope.vaOpenedBranches = [];
+                    //    }
+                    //    scope.vaOpenedBranches.push(branchIndex);
+                    //}
+                    scope.vaOpenedBranches = getOpenedBranches(scope.branches);
+                    scope.opened = TreeDataService.getMetaFromBranches(scope.branches, 0, scope.vaIdFieldName);
+                }
+
             };
 
             scope.$watch("vaTemplate", function (newVal) {
                 scope.template = '<span ' +
-                    'ng-class="{level1:item.lv==1, level2:item.lv==2, level3:item.lv==3, level4:item.lv==4, level5:item.lv==5, level6:item.lv==6, folder:item.fldr}">' +
+                    'ng-class="{level1:item.lv==1, level2:item.lv==2, level3:item.lv==3, level4:item.lv==4, level5:item.lv==5, level6:item.lv==6, folder:item.fldr, finded: item.fd==true}">' +
                     '<span ng-if="item.fldr && !item.pn"><i class="fa fa-folder-o" aria-hidden="true"></i></span>' +
                     '<span ng-if="item.fldr && item.pn"><i class="fa fa-folder-open-o" aria-hidden="true"></i></span> ' +
                     '<span ng-if="!item.fldr"><i class="fa fa-file" aria-hidden="true"></i></span> ' + scope.vaTemplate + '</span>';
@@ -69,19 +73,45 @@
 
 
 
-            scope.$watch("vaSrc.length", function (newVal) {
+            scope.$watch("vaSrc", function (newVal) {
                 //console.log("vaSrc", scope.vaSrc);
                 if (scope.vaSrc && angular.isArray(scope.vaSrc) && scope.vaSrc.length > 0) {
                     scope.branches = TreeDataService.getBranchesFromArray(scope.vaSrc, scope.vaIdFieldName, scope.vaIdParentFieldName);
-                    scope.branches[0].opened = true;
+                    if (scope.branches[0]) {
+                        scope.branches[0].opened = true;
+                    }
+
                     scope.opened = TreeDataService.getMetaFromBranches(scope.branches, 0, scope.vaIdFieldName);
                 }
-            });
+            }, false);
 
             scope.$watch("vaMask", function (newVal) {
-                var findedItems = TreeDataService.findItemsByText(scope.branches,  scope.vaMask, scope.vaTextFieldName);
-                console.log("vaMask: ", newVal, " / ", findedItems.length);
+                clearFindedItems();
+                var isClearFindedItems = false;
+                //console.log("vaMask=", newVal, " current.findedItems.length = ", current.findedItems);
+
+                current.findedItems.length = 0;
+                if (newVal && newVal.length > 0) {
+                    current.findedItems = TreeDataService.findItemsByText(scope.branches, scope.vaMask, scope.vaTextFieldName);
+                    isClearFindedItems = true;
+                }
+                
+                TreeDataService.closeAllBranches(scope.branches);
+                for (var i = 0; i < current.findedItems.length; i++) {
+                    var item = current.findedItems[i];
+                    if (item.dt[scope.vaIdParentFieldName]) {
+                        TreeDataService.openPathBranchesByBranchId(scope.branches, item.dt[scope.vaIdParentFieldName]);
+                    }
+                }
+                scope.opened = TreeDataService.getMetaFromBranches(scope.branches, 0, scope.vaIdFieldName, isClearFindedItems);
+                console.log("vaMask: ", newVal, " / ", current.findedItems.length);
             });
+
+            function clearFindedItems() {
+                for (var i = 0; i < current.findedItems.length; i++) {
+                    current.findedItems[i].finded = undefined;
+                }
+            }
 
             function setWindow() {
                 scope.data = scope.vaSrc;
@@ -94,8 +124,8 @@
             templateUrl: function () { return scriptPath + "template.html?t=" + Math.random(); },
             link: link,
             scope: {
-                vaTemplate: "="
-                , vaSrc:    "="
+                vaTemplate: "=?"
+                , vaSrc:    "=?"
                 , vaLength: "=?"
                 , vaOnClick: "&?"
                 , vaOnHover: "&?"

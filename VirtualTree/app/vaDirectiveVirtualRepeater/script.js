@@ -155,10 +155,10 @@
                 }
             };
 
-            scope.onClick = function (item, index) {
+            scope.onClick = function (item, index, param) {
                 //console.log("onClick", this);
                 if (scope.vaOnClick) {
-                    scope.vaOnClick({ obj: { index: index, item: item } });
+                    scope.vaOnClick({ obj: { index: index, item: item, param: param } });
                 }
             };
 
