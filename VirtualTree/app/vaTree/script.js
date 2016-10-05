@@ -47,27 +47,23 @@
             scope.onClick = function (item) {
                 
                 var branchIndex = item.item.dt[scope.vaIdFieldName];
-                //console.log("onClick bh=", branchIndex, " item=", item);
-                if (scope.branches[branchIndex]) {
-
-                    scope.branches[branchIndex].opened = !scope.branches[branchIndex].opened;
-                    //if (scope.branches[branchIndex].opened) {
-                    //    if (!scope.vaOpenedBranches) {
-                    //        scope.vaOpenedBranches = [];
-                    //    }
-                    //    scope.vaOpenedBranches.push(branchIndex);
-                    //}
-                    scope.vaOpenedBranches = getOpenedBranches(scope.branches);
-                    scope.opened = TreeDataService.getMetaFromBranches(scope.branches, 0, scope.vaIdFieldName);
+                console.log("onClick bh=", branchIndex, " item=", item.param);
+                if (item.param && item.param.folder) {
+                    if (scope.branches[branchIndex]) {
+                        scope.branches[branchIndex].opened = !scope.branches[branchIndex].opened;
+                        scope.vaOpenedBranches = getOpenedBranches(scope.branches);
+                        scope.opened = TreeDataService.getMetaFromBranches(scope.branches, 0, scope.vaIdFieldName);
+                    }
                 }
+
 
             };
 
             scope.$watch("vaTemplate", function (newVal) {
                 scope.template = '<span ' +
                     'ng-class="{level1:item.lv==1, level2:item.lv==2, level3:item.lv==3, level4:item.lv==4, level5:item.lv==5, level6:item.lv==6, folder:item.fldr, finded: item.fd==true}">' +
-                    '<span ng-if="item.fldr && !item.pn"><i class="fa fa-folder-o" aria-hidden="true"></i></span>' +
-                    '<span ng-if="item.fldr && item.pn"><i class="fa fa-folder-open-o" aria-hidden="true"></i></span> ' +
+                    '<span ng-click="onClick(item, index, {folder: true})" ng-if="item.fldr && !item.pn"><i class="fa fa-folder-o" aria-hidden="true"></i></span>' +
+                    '<span ng-click="onClick(item, index, {folder: true})" ng-if="item.fldr && item.pn"><i class="fa fa-folder-open-o" aria-hidden="true"></i></span> ' +
                     '<span ng-if="!item.fldr"><i class="fa fa-file" aria-hidden="true"></i></span> ' + scope.vaTemplate + '</span>';
             });
 
