@@ -1,238 +1,124 @@
 ﻿(function ($interval, $parse, $compile) {
 
-    var s = document.getElementsByTagName('script');
-    var scriptUrl = s[s.length - 1].src;
-    var scriptPath = scriptUrl.replace(/(.*\/)(.*\.js)/i, "$1");
-    var templateFullUrl = scriptPath + "style.css";
+    function getWindow(src, start, end) {
+        var window = [];
+        for (var i = start; i <= end; i++) {
+            window.push(src[i]);
+        }
+        return window;
+    }
 
-    var t = Math.random();
+    function getEnd(start, len, max) {
+        var end = start + len;
+        if (end > max) {
+            end = max;
+        }
+        return end;
+    }
+
+    function getStart(scroll) {
+        return Math.round( scroll / 20 );
+    }
 
     function fn($interval, $parse, $compile) {
 
         var items = [];
 
         function link(scope, element, attr) {
-            console.log("vr template version");
+
             var elements = {
-                listBox: element.find(".va-list-box")
-                , list: element.find(".va-list-box ul")
-                , box: element.find(".va-virtual-repeater")
-                , spacers: { fast: element.find(".va-scroll-fast .va-spacers") }
-                , scrolls: { fast: element.find(".va-scroll-fast") }
+                box: element.find(".va-virtual-repeater"),
+                spacer: element.find(".va-virtual-repeater div"),
+                list: element.find(".va-virtual-repeater ul")
             };
 
             var current = {
-                height: { box: 0, item: 0, fastItem: 0, spacers: { slow: 0, fast: 0, fastActive: 0 } }
-                , triggers: { scroll: false, scrollFast: false }
-                , indexes: { start: 0, end: 0, max: 0 }
-                , len: 0
-                , scroll: 0
-                , subScope: null
-                , stat: { scroll: [] }
-                , h: 0
-                , intervals: { fastScroll: null }
-                , touchStart: 0
+                heights: { spacer: 0, box: elements.box.height() },
+                scroll: 0,
+                indexes: {start:0, end:0, max: 0},
+                len: 10,
+                intervals: { scroll: null },
+                triggers: {buzzy: false}
             };
 
 
-            scope.dataWindow = [1, 2, 3];
+            scope.window = [];
+
+            scope.styles = { spacer: { height: 0 }, ul: {marginTop: 0} };
 
 
-            elements.scrolls.fast.on("scroll", function () {
-                scope.$apply(function () {
 
-                    if (current.triggers.scrollFast) {
-                        current.triggers.scrollFast = false;
-                        return;
-                    }
-
-
-                    var scroll = elements.scrolls.fast.scrollTop();
-                    current.indexes.start = Math.round(scroll * current.height.fastItemInverse);
-
-
-                    current.intervals.fastScroll = $interval(function () {
-                        setIndexes(current.indexes.start);
-
-                        setDataWindow();
-                        current.intervals.fastScroll = null;
-                    }, 1, 1);
-                });
-            });
-
-            elements.list.on("touchstart", function (event) {
-                current.touchStart = event.originalEvent.touches[0].clientY + 0;
-                event.preventDefault();
-                console.log("touchstart", current.touchStart, event.originalEvent.target);
-            });
-
-            elements.list.on("touchmove", function (event) {
-                event.preventDefault();
-                var wheel = current.touchStart - event.originalEvent.touches[0].clientY;
-                if (wheel > 15 || wheel < -15) {
-                    current.touchStart = event.originalEvent.touches[0].clientY;
-                    scope.$apply(function () {
-                        onWheel(wheel / 10);
-                    });
-                }
-
-                console.log("touchmove", event.originalEvent.touches[0].clientY, wheel);
-            });
-
-            elements.list.on("touchend", "div", function (event) {
-                console.log("touchend");
-            });
-
-            elements.listBox.on("wheel", function (event) {
-                var wheel = event.originalEvent.deltaY;
-                scope.$apply(function () {
-                    onWheel(wheel);
-                });
-                return false;
-            });
-
-            scope.$watch("vaTmplt", function () {
-                console.log("$watch vaTmplt");
+            scope.$watch("vaTemplate", function () {
+                //console.log("$watch vaTemplate");
                 setTemplate();
             });
 
             scope.$watch("vaLength", function (newVal) {
-                console.log("$watch vaLength");
                 current.len = newVal - 0;
-                setHeight();
-
-                setDataWindow();
             });
 
-            scope.$watch("vaSrc", function (nw) {
-                //console.log("newValue: ", nw);
-                if (nw) {
-                    //elements.scrolls.fast.scrollTop(0);
-                    current.indexes.max = nw.length - 1;
-                    current.height.spacers.fast = nw.length * current.height.item;
-                    
-
-                } else {
-                    current.indexes.max = 0;
-                    current.height.spacers.fast = 0;
+            scope.$watch("vaSrc", function (nv) {
+                //console.log("$watch vaSrc");
+                if (nv) {
+                    var len = nv.length;
+                    current.heights.spacer = len * 20 + current.heights.box - 20;
+                    scope.styles.spacer.height = current.heights.spacer + "px";
+                    current.indexes.max = len - 1;
+                    setIndexes();
                 }
-
-
-                
-                if (current.height.spacers.fast > current.height.box * 20) {
-                    current.height.spacers.fast = current.height.box * 20;
-                }
-                current.height.spacers.fastActive = current.height.spacers.fast - current.height.box;
-                if (current.height.spacers.fastActive < 0) current.height.spacers.fastActive = 0;
-                if (current.height.spacers.fastActive > 0 && current.indexes.max > 0) {
-                    current.height.fastItem = current.height.spacers.fastActive / current.indexes.max;
-                } else {
-                    current.height.fastItem = 0;
-                }
-                if (current.height.spacers.fastActive > 0) {
-                    current.height.fastItemInverse = current.indexes.max / current.height.spacers.fastActive;
-                } else {
-                    current.height.fastItemInverse = 0;
-                }
-                elements.spacers.fast.height(current.height.spacers.fast);
-
-                setIndexes();
-                //console.log("$watch vaSrc", nw.length, current.height);
-                if (current.height.box > 0) {
-                    setDataWindow();
-                } else {
-                    $interval(function () {
-                        setDataWindow();
-                    }, 0, 1);
-                }
-
             });
 
             scope.onHover = function (item, index) {
-                //console.log("onHover", this);
                 if (scope.vaOnHover) {
                     scope.vaOnHover({ obj: { index: index, item: item } });
                 }
             };
 
-            scope.onClick = function (item, index, param) {
-                //console.log("onClick", this);
+            scope.onClick = function (item, index, event) {
                 if (scope.vaOnClick) {
-                    scope.vaOnClick({ obj: { index: index, item: item, param: param } });
+                    //console.log("event: ", event);
+                    scope.vaOnClick({ obj: { index: index, item: item, event: event } });
                 }
             };
 
-            function onWheel(diff) {
-                if (diff > 0) {
-                    current.indexes.start += 1;
-
-                    if (current.indexes.start > current.indexes.max) {
-                        current.indexes.start = current.indexes.max;
-                    }
-                    setIndexes(current.indexes.start);
-                    setDataWindow();
-                    current.scroll = Math.round(current.indexes.start * current.height.fastItem);
-                    current.triggers.scrollFast = true;
-                    elements.scrolls.fast.scrollTop(current.scroll);
-                } else {
-                    if (diff < 0) {
-                        current.indexes.start += -1;
-                        if (current.indexes.start < 0) {
-                            current.indexes.start = 0;
-                        }
-                        setIndexes(current.indexes.start);
-                        setDataWindow();
-                        current.scroll = Math.round(current.indexes.start * current.height.fastItem);
-                        current.triggers.scrollFast = true;
-                        elements.scrolls.fast.scrollTop(current.scroll);
-                    }
+            elements.box.on("scroll", function (e) {
+                var ntrvl = 1;
+                if (current.triggers.buzzy) {
+                    ntrvl = 30;
+                    $interval.cancel(current.intervals.scroll);
                 }
-            }
+                current.scroll = elements.box[0].scrollTop;
+                scope.styles.ul.marginTop = current.scroll + "px";
+                
+                current.intervals.scroll = $interval(function () {
+                    current.triggers.buzzy = true;
+                    $interval(function () {
+                        setIndexes();
+                        current.triggers.buzzy = false;
+                    }, 1, 1);
 
-            function setHeight() {
-                scope.dataWindow.length = 0;
-                current.height.box = 400;
-                current.height.item = 20;
-                elements.box.height(current.height.box);
-                scope.dataWindow.length = 0;
-            }
+                }, ntrvl, 1);
+                
+                //scope.$apply();
+            });
 
-            function setIndexes(index) {
-                if (current.len && current.indexes.max) {
+            //elements.list.on("click", function (e) {
+            //    console.log("click e=", e);
+            //});
 
-                    if (index != undefined) {
-                        current.indexes.start = index;
-                    } else {
-                        if (!current.indexes.start) {
-                            current.indexes.start = 0;
-                        }
-                    }
-                    if (index > current.indexes.max) {
-                        index = current.indexes.max;
-                    }
-                    current.indexes.end = current.indexes.start + current.len;
-                    if (current.indexes.end > current.indexes.max) {
-                        current.indexes.end = current.indexes.max
-                    }
-                    if (angular.isDefined(scope.vaCurrentIndex)) {
-                        scope.vaCurrentIndex = current.indexes.start;
-                    }
-
-                }
+            function setIndexes() {
+                current.indexes.start = getStart(current.scroll);
+                current.indexes.end = getEnd(current.indexes.start, current.len, current.indexes.max);
+                scope.window.length = 0;
+                scope.window = getWindow(scope.vaSrc, current.indexes.start, current.indexes.end);
             }
 
             function setDataWindow() {
-                scope.dataWindow.length = 0;
-                if (scope.vaSrc && scope.vaSrc.length > 0) {
-                    for (var i = current.indexes.start; i <= current.indexes.end; i++) {
-                        scope.dataWindow.push(scope.vaSrc[i]);
-                    }
-                }
 
             }
 
             function setTemplate() {
-                var tmpl = '<li ng-repeat="(index, item) in dataWindow" ng-mouseover="onHover(item, index)"  ng-click="onClick(item, index)">' + scope.vaTmplt + '&nbsp;</li>';
+                var tmpl = '<li ng-repeat="(index, item) in window" ng-mouseover="onHover(item, index)"  ng-click="onClick(item, index, $event)">' + scope.vaTemplate + '&nbsp;</li>';
                 var newElement = null;
                 try {
                     newElement = angular.element(tmpl);
@@ -249,108 +135,25 @@
                 } catch (error) {
                     console.log(error);
                 }
+            }
 
-
+            function isDataReady() {
 
             }
 
-            //setTemplate();
-
         }
 
-        //controller.$inject = ['$scope', '$element'];
-
-        //function controller($scope, $element) {
-        //    var self = this;
-
-        //    var current = {
-        //        indexes: { start: 0, end: 0, max: 0 }
-        //        , len: 0
-        //    };
-
-        //    var elements = {
-        //        items: $element.find(".va-list-box li")
-        //        , listBox: $element.find(".va-list-box")
-        //        , list: $element.find(".va-list-box ul")
-        //        , box: $element.find(".va-virtual-repeater")
-        //        , spacers: $element.find(".va-scroll-fast .va-spacers")
-        //        , scrolls: $element.find(".va-scroll-fast")
-        //    };
-
-        //    self.test = "controller of virtual repeater directive";
-        //    self.dataWindow = [];
-
-        //    function setIndexes(index) {
-        //        if ($scope.vaSrc && current.len && current.indexes.max) {
-
-        //            if (index != undefined) {
-        //                current.indexes.start = index;
-        //            } else {
-        //                current.indexes.start = 0;
-        //            }
-        //            if (index > current.indexes.max) {
-        //                index = current.indexes.max;
-        //            }
-        //            current.indexes.end = current.indexes.start + current.len;
-        //            if (current.indexes.end > current.indexes.max) {
-        //                current.indexes.end = current.indexes.max
-        //            }
-        //            if ($scope.vaCurrentIndex) {
-        //            $scope.vaCurrentIndex = current.indexes.start;
-
-        //            }
-        //        }
-        //        console.log("controller setIndexes(", index, "): ", current);
-        //    }
-
-        //    function setDataWindow() {
-        //        if ($scope.vaSrc) {
-        //            self.dataWindow.length = 0;
-        //            for (var i = current.indexes.start; i <= current.indexes.end; i++) {
-        //                self.dataWindow.push($scope.vaSrc[i]);
-        //            }
-        //        }
-        //    }
-
-        //    elements.listBox.on("wheel", function (event) {
-        //        console.log("on wheel:", event);
-        //    });
-
-        //    $scope.$watch("vaLength", function (newVal) {
-        //        console.log("controller: $watch vaLength: ", newVal);
-        //        if (newVal) {
-        //            current.len = newVal - 0;
-        //        } else {
-        //            current.len = 0;
-        //        }
-        //        setIndexes(0);
-        //        setDataWindow();
-        //    });
-
-        //    $scope.$watch("vaSrc", function (newVal) {
-        //        console.log("controller: $watch vaSrc");
-        //        if ($scope.vaSrc) {
-        //            current.indexes.max = $scope.vaSrc.length - 1;
-        //        }
-        //        setIndexes();
-        //        setDataWindow();
-        //    });
-
-        //}
 
         return {
-            templateUrl: function () { return scriptPath + "template.html?t=" + t; },
+            templateUrl: function () { return "app/vaDirectiveVirtualRepeater/template.html?t=" + Math.random(); },
             link: link,
             transclude: false,
-            //controller: controller,
-            //controllerAs: "ctrl",
             scope: {
-                vaTmplt: "<"
-                , vaSrc: "<"
-                , vaLength: "<"
-                , vaOnClick: "&"
-                , vaOnHover: "&"
-                , vaCurrentIndex: "="
+                vaTemplate: "<?"
+                , vaSrc: "<?"
+                , vaLength: "<?"
+                , vaOnClick: "&?"
+                , vaOnHover: "&?"
             }
         }
     }

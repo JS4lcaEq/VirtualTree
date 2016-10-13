@@ -44,11 +44,11 @@
                 return ret;
             }
 
-            scope.onClick = function (item) {
+            scope.onClick = function (obj) {
                 
-                var branchIndex = item.item.dt[scope.vaIdFieldName];
-                console.log("onClick bh=", branchIndex, " item=", item.param);
-                if (item.param && item.param.folder) {
+                var branchIndex = obj.item.dt[scope.vaIdFieldName];
+                console.log("onClick bh=", branchIndex, " obj.event.target=", obj.event.target.tagName);
+                if (obj.item && obj.item.fldr && obj.event.target.tagName == "I") {
                     if (scope.branches[branchIndex]) {
                         scope.branches[branchIndex].opened = !scope.branches[branchIndex].opened;
                         scope.vaOpenedBranches = getOpenedBranches(scope.branches);
@@ -60,11 +60,9 @@
             };
 
             scope.$watch("vaTemplate", function (newVal) {
-                scope.template = '<span ' +
-                    'ng-class="{level1:item.lv==1, level2:item.lv==2, level3:item.lv==3, level4:item.lv==4, level5:item.lv==5, level6:item.lv==6, folder:item.fldr, finded: item.fd==true}">' +
-                    '<span ng-click="onClick(item, index, {folder: true})" ng-if="item.fldr && !item.pn"><i class="fa fa-folder-o" aria-hidden="true"></i></span>' +
-                    '<span ng-click="onClick(item, index, {folder: true})" ng-if="item.fldr && item.pn"><i class="fa fa-folder-open-o" aria-hidden="true"></i></span> ' +
-                    '<span ng-if="!item.fldr"><i class="fa fa-file" aria-hidden="true"></i></span> ' + scope.vaTemplate + '</span>';
+                scope.template = '<span class="level{{item.lv}}" ng-class="{finded: item.fd}">'+
+                    '<i ng-class="{\'fa-folder-o\': item.fldr && !item.pn, \'fa-folder-open-o\': item.fldr && item.pn, \'fa-file\': !item.fldr}" class="fa"></i> ' +
+                    scope.vaTemplate + '</span>';
             });
 
 

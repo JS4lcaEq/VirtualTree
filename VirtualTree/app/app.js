@@ -8,7 +8,7 @@
 
         this.tds = TreeDataService;
         this.test = "MainCtrl";
-        this.template = "[{{item.ndx}}]={{item.dt.text}}";
+        this.template = "{{item.dt.text}}";
         this.levelsCount = 2;
         this.levelItemsCount = 2;
         this.idFieldName = "id";
