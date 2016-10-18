@@ -33,6 +33,9 @@
         label{
             display: block;
         }
+        .va-virtual-tree .fa-folder-open-o, .va-virtual-tree .fa-folder-o {
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -102,8 +105,9 @@
                          va-id-parent-field-name="ctrl.idParentFieldName" 
                          va-length="'10'"
                          va-mask="ctrl.search"
-                         va-text-field-name="'text'"></va-virtual-tree>
-
+                         va-text-field-name="'text'"
+                         va-opened-branches="ctrl.ob"></va-virtual-tree>
+        {{ctrl.ob}}
         <footer>
             <!--<p>Virtual Tree &copy; VAsoft 2016</p>-->
         </footer>

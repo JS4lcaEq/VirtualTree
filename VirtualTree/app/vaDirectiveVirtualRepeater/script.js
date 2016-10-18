@@ -1,5 +1,7 @@
 ﻿(function ($interval, $parse, $compile) {
 
+    var options = { stepHeight: 10 };
+
     function getWindow(src, start, end) {
         var window = [];
         for (var i = start; i <= end; i++) {
@@ -17,7 +19,7 @@
     }
 
     function getStart(scroll) {
-        return Math.round( scroll / 20 );
+        return Math.round( scroll / options.stepHeight );
     }
 
     function fn($interval, $parse, $compile) {
@@ -61,7 +63,7 @@
                 //console.log("$watch vaSrc");
                 if (nv) {
                     var len = nv.length;
-                    current.heights.spacer = len * 20 + current.heights.box - 20;
+                    current.heights.spacer = len * options.stepHeight + current.heights.box - options.stepHeight;
                     scope.styles.spacer.height = current.heights.spacer + "px";
                     current.indexes.max = len - 1;
                     setIndexes();
