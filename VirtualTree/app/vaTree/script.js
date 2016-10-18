@@ -100,6 +100,7 @@
                         TreeDataService.openPathBranchesByBranchId(scope.branches, item.dt[scope.vaIdParentFieldName]);
                     }
                 }
+
                 scope.opened = TreeDataService.getMetaFromBranches(scope.branches, 0, scope.vaIdFieldName, isClearFindedItems);
                 console.log("vaMask: ", newVal, " / ", current.findedItems.length);
             });

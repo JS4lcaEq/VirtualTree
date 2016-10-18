@@ -30,9 +30,11 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
     <style>
-        label{
+        label {
             display: block;
+            line-height: 40px;
         }
+
         .va-virtual-tree .fa-folder-open-o, .va-virtual-tree .fa-folder-o {
             cursor: pointer;
         }
@@ -69,40 +71,45 @@
     <div class="container" style="padding-top: 50px;">
         <!-- Example row of columns -->
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-8">
                 <h2>Data Source</h2>
-                <label class="form-inline"><span>Levels count: </span><input class="form-control" ng-model="ctrl.levelsCount" /></label>
-                <label class="form-inline"><span>Level items count: </span><input class="form-control" ng-model="ctrl.levelItemsCount" /></label>
+                <label class="form-inline">
+                    Levels count: <input class="form-control" ng-model="ctrl.levelsCount" />
+                    Level items count: <input class="form-control" ng-model="ctrl.levelItemsCount" />
+                    id&nbsp;field&nbsp;name: <input class="form-control" ng-model="ctrl.idFieldName" />
+                    parent id field name: <input class="form-control" ng-model="ctrl.idParentFieldName" />
+                    <button class="btn btn-default" role="button" ng-click="ctrl.reset()">Reset</button>
+                </label>
+                <label class="form-inline"></label>
                 <label class="form-inline"><span>search: </span><input class="form-control" ng-model="ctrl.search" /></label>
-                <label class="form-inline"><span>id field name: </span><input class="form-control" ng-model="ctrl.idFieldName" /></label>
-                <label class="form-inline"><span>parent id field name: </span><input class="form-control" ng-model="ctrl.idParentFieldName" /></label>
-                <label><span>template: </span><input class="form-control" ng-model="ctrl.template" /></label>
-                <label><span>ctrl.data[0].text: </span><input class="form-control" ng-model="ctrl.data[0].text" /></label>
-                <p><button class="btn btn-default" role="button" ng-click="ctrl.reset()">Reset</button></p>
+                <label class="form-inline"><span></label>
+                <label class="form-inline"><span></label>
+                <label class="form-inline">
+                    <span>template: </span><input class="form-control" ng-model="ctrl.template" />
+                    <button class="btn btn-default" role="button" ng-click="ctrl.resetTemplate()">Reset</button>
+                </label>
+                <label class="form-inline">ctrl.data[0].text: <input class="form-control" ng-model="ctrl.data[0].text" /></label>
+                <p></p>
 
             </div>
 
-            <div class="col-md-8">
+            <div class="col-md-4">
                 <h2>Data</h2>
                 <p id="va-virtual-repeater-directive">
-                    {{ctrl.data[0]}}<br />
-                    {{ctrl.data[1]}}<br />
-                    {{ctrl.data[2]}}<br />
-                    {{ctrl.data[3]}}<br />
-                    {{ctrl.data[4]}}<br />
+                    [{{ctrl.data[0]}},<br />
+                    {{ctrl.data[1]}},<br />
                     ...<br />
-                    {{ctrl.data[ctrl.data.length-1]}}<br />
+                    {{ctrl.data[ctrl.data.length-1]}}]<br />
 
                 </p>
             </div>
         </div>
-        
 
-        <va-virtual-tree 
-                         va-template="ctrl.template" 
-                         va-src="ctrl.data" 
-                         va-id-field-name="ctrl.idFieldName" 
-                         va-id-parent-field-name="ctrl.idParentFieldName" 
+
+        <va-virtual-tree va-template="ctrl.template"
+                         va-src="ctrl.data"
+                         va-id-field-name="ctrl.idFieldName"
+                         va-id-parent-field-name="ctrl.idParentFieldName"
                          va-length="'10'"
                          va-mask="ctrl.search"
                          va-text-field-name="'text'"
