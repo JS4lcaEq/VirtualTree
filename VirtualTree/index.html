@@ -95,12 +95,11 @@
 
             <div class="col-md-4">
                 <h2>Data</h2>
-                <p id="va-virtual-repeater-directive">
+                <p id="va-virtual-repeater-directive" ng-if="ctrl.data && ctrl.data.length">
                     [{{ctrl.data[0]}},<br />
                     {{ctrl.data[1]}},<br />
                     ...<br />
                     {{ctrl.data[ctrl.data.length-1]}}]<br />
-
                 </p>
             </div>
         </div>
@@ -120,8 +119,7 @@
         </footer>
     </div>
     <pre>
-{{ctrl.data_}}
-{{ctrl.dataCount}}        
+       
 </pre>
     <!-- /container -->
     <!-- ====== Bootstrap core JavaScript ========================= -->
